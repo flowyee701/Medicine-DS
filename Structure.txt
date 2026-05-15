@@ -1,0 +1,45 @@
+ecg_project/
+│
+├── data/
+│   ├── raw/
+│   │   ├── ptb-xl/
+│   │   │   ├── ptbxl_database.csv
+│   │   │   ├── scp_statements.csv
+│   │   │   └── records100/
+│   │   └── ptb-xl-plus/
+│   │       ├── 12sl_features.csv
+│   │       ├── feature_description.csv
+│   │       └── labels/
+│   │
+│   ├── processed/
+│   │   ├── ecg_research_dataset.csv
+│   │   ├── train.csv
+│   │   ├── validation.csv
+│   │   └── test.csv
+│
+├── notebooks/
+│   └── ecg_analysis_report.ipynb
+│
+├── src/
+│   ├── load_data.py
+│   ├── preprocess.py
+│   ├── feature_engineering.py
+│   ├── train_model.py
+│   ├── evaluate_model.py
+│   └── visualization.py
+│
+├── app/
+│   └── streamlit_app.py
+│
+├── api/
+│   └── main.py
+│
+├── models/
+│   ├── normal_abnormal_model.pkl
+│   └── scaler.pkl
+│
+├── reports/
+│   └── figures/
+│
+├── requirements.txt
+└── README.md
