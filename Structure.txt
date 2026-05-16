@@ -6,7 +6,7 @@ ecg_project/
 │   │   │   ├── ptbxl_database.csv
 │   │   │   ├── scp_statements.csv
 │   │   │   └── records100/
-│   │   └── ptb-xl-plus/
+│   │   └── ptb-xl+/
 │   │       ├── 12sl_features.csv
 │   │       ├── feature_description.csv
 │   │       └── labels/
