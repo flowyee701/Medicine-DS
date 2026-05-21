@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ЭКГ и Аритмии — Медицинская справка</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1f2d45;
+    --accent: #00d4ff;
+    --accent2: #ff6b6b;
+    --accent3: #51cf66;
+    --accent4: #ffd43b;
+    --text: #e8edf5;
+    --text-muted: #7a8ba3;
+    --text-dim: #4a5c73;
+    --pulse: #ff4757;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,212,255,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,107,107,0.05) 0%, transparent 60%);
+  }
+
+  /* Animated ECG line */
+  .ecg-container {
+    width: 100%;
+    max-width: 900px;
+    height: 120px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+
+  .ecg-svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ecg-path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    filter: drop-shadow(0 0 6px var(--accent));
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawEcg 3s ease-in-out forwards, pulseGlow 2s ease-in-out 3s infinite;
+  }
+
+  @keyframes drawEcg {
+    to { stroke-dashoffset: 0; }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { filter: drop-shadow(0 0 4px var(--accent)); }
+    50% { filter: drop-shadow(0 0 12px var(--accent)) drop-shadow(0 0 24px rgba(0,212,255,0.4)); }
+  }
+
+  .hero-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.5s forwards;
+  }
+
+  .hero-title span { color: var(--accent); }
+
+  .hero-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 600px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.8s forwards;
+  }
+
+  .hero-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 48px;
+    justify-content: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 3.1s forwards;
+  }
+
+  .nav-pill {
+    padding: 8px 20px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all 0.3s;
+    background: var(--surface);
+  }
+
+  .nav-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SECTIONS */
+  section {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    margin-bottom: 32px;
+    line-height: 1.2;
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 0;
+  }
+
+  /* HEART ANATOMY SVG SECTION */
+  .anatomy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media (max-width: 700px) {
+    .anatomy-grid { grid-template-columns: 1fr; }
+  }
+
+  .anatomy-svg-wrap {
+    position: relative;
+  }
+
+  /* ECG WAVE EXPLAINER */
+  .wave-explainer {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .wave-explainer::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+  }
+
+  .wave-svg-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 24px 0;
+  }
+
+  /* INFO CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0,212,255,0.08);
+  }
+
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .card-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 8px;
+  }
+
+  .card-text {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .card-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 100px;
+    margin-bottom: 10px;
+  }
+
+  .badge-normal { background: rgba(81,207,102,0.15); color: var(--accent3); border: 1px solid rgba(81,207,102,0.3); }
+  .badge-warning { background: rgba(255,212,59,0.15); color: var(--accent4); border: 1px solid rgba(255,212,59,0.3); }
+  .badge-danger { background: rgba(255,107,107,0.15); color: var(--accent2); border: 1px solid rgba(255,107,107,0.3); }
+  .badge-info { background: rgba(0,212,255,0.15); color: var(--accent); border: 1px solid rgba(0,212,255,0.3); }
+
+  /* INTERVAL TABLE */
+  .interval-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.9rem;
+  }
+
+  .interval-table th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .interval-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(31,45,69,0.5);
+    vertical-align: top;
+  }
+
+  .interval-table tr:hover td { background: rgba(0,212,255,0.03); }
+
+  .val-normal { color: var(--accent3); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+  .val-danger { color: var(--accent2); font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+
+  /* CONDUCTION SYSTEM */
+  .conduction-flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin: 32px 0;
+  }
+
+  .conduction-node {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    min-width: 140px;
+    transition: all 0.3s;
+    cursor: default;
+  }
+
+  .conduction-node:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(0,212,255,0.1);
+  }
+
+  .conduction-node .node-title {
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .conduction-node .node-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .conduction-arrow {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+    color: var(--text-dim);
+    font-size: 0.7rem;
+    text-align: center;
+  }
+
+  .arrow-line {
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--border), var(--accent));
+    position: relative;
+  }
+
+  .arrow-line::after {
+    content: '▶';
+    position: absolute;
+    right: -8px;
+    top: -6px;
+    color: var(--accent);
+    font-size: 0.7rem;
+  }
+
+  /* QT FORMULAS */
+  .formula-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin: 28px 0;
+  }
+
+  .formula-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .formula-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .formula-math {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--accent);
+    background: rgba(0,212,255,0.05);
+    padding: 12px;
+    border-radius: 8px;
+    margin: 12px 0;
+  }
+
+  .formula-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ARRHYTHMIA CARDS */
+  .arrhythmia-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .arrh-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+
+  .arrh-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .arrh-card.danger { border-color: rgba(255,107,107,0.3); }
+  .arrh-card.danger:hover { border-color: var(--accent2); }
+  .arrh-card.warning { border-color: rgba(255,212,59,0.3); }
+  .arrh-card.warning:hover { border-color: var(--accent4); }
+  .arrh-card.safe { border-color: rgba(81,207,102,0.3); }
+  .arrh-card.safe:hover { border-color: var(--accent3); }
+
+  .arrh-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .arrh-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--text-muted);
+  }
+
+  .arrh-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+  }
+
+  .arrh-ecg-mini {
+    margin: 14px 0;
+    height: 50px;
+  }
+
+  .arrh-features {
+    list-style: none;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .arrh-features li {
+    padding: 3px 0;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .arrh-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.7rem;
+    top: 4px;
+  }
+
+  /* RANGE VISUALIZER */
+  .range-bar-wrap {
+    margin: 8px 0;
+  }
+
+  .range-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .range-bar {
+    height: 8px;
+    border-radius: 100px;
+    background: var(--surface2);
+    position: relative;
+    overflow: visible;
+  }
+
+  .range-fill {
+    height: 100%;
+    border-radius: 100px;
+    position: absolute;
+  }
+
+  .range-marker {
+    position: absolute;
+    top: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    border: 2px solid var(--bg);
+  }
+
+  /* AXIS DIAGRAM */
+  .axis-diagram {
+    display: flex;
+    justify-content: center;
+    margin: 32px 0;
+  }
+
+  /* PROJECT SECTION */
+  .project-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+
+  @media (max-width: 600px) {
+    .project-cols { grid-template-columns: 1fr; }
+  }
+
+  .project-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .project-block h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: var(--accent);
+  }
+
+  .hypothesis-box {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin: 16px 0;
+    font-size: 0.9rem;
+  }
+
+  .hypothesis-box strong { color: var(--accent4); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* HIGHLIGHT */
+  .highlight { color: var(--accent); font-weight: 500; }
+  .highlight-red { color: var(--accent2); font-weight: 500; }
+  .highlight-green { color: var(--accent3); font-weight: 500; }
+  .highlight-yellow { color: var(--accent4); font-weight: 500; }
+
+  /* TOOLTIP */
+  .tip {
+    border-bottom: 1px dashed var(--text-dim);
+    cursor: help;
+    position: relative;
+  }
+
+  /* INTERACTIVE HEART RATE */
+  .hr-interactive {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .hr-display {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 4rem;
+    color: var(--accent2);
+    filter: drop-shadow(0 0 20px rgba(255,71,87,0.4));
+    animation: heartbeat 0.8s ease-in-out infinite;
+  }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.06); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.04); }
+  }
+
+  .hr-slider {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    outline: none;
+  }
+
+  .hr-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent2);
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255,71,87,0.5);
+  }
+
+  .hr-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; }
+  .hr-group-badge {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 20px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    transition: all 0.3s;
+  }
+
+  .sticky-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(10,14,26,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+    transform: translateY(-100%);
+    transition: transform 0.4s;
+  }
+
+  .sticky-nav.shown { transform: translateY(0); }
+  .sticky-nav a { font-size: 0.78rem; color: var(--text-muted); text-decoration: none; padding: 4px 12px; border-radius: 20px; transition: all 0.2s; }
+  .sticky-nav a:hover { color: var(--accent); background: rgba(0,212,255,0.08); }
+</style>
+</head>
+<body>
+
+<nav class="sticky-nav" id="stickyNav">
+  <a href="#anatomy">Анатомия ЭКГ</a>
+  <a href="#conduction">Проводящая система</a>
+  <a href="#intervals">Интервалы</a>
+  <a href="#qtc">Коррекция QT</a>
+  <a href="#arrhythmias">Аритмии</a>
+  <a href="#axis">Электрическая ось</a>
+  <a href="#project">О проекте</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="ecg-container">
+    <svg class="ecg-svg" viewBox="0 0 900 120" preserveAspectRatio="none">
+      <!-- Grid lines -->
+      <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+        <line x1="0" y1="20" x2="900" y2="20"/>
+        <line x1="0" y1="40" x2="900" y2="40"/>
+        <line x1="0" y1="60" x2="900" y2="60"/>
+        <line x1="0" y1="80" x2="900" y2="80"/>
+        <line x1="0" y1="100" x2="900" y2="100"/>
+        <line x1="100" y1="0" x2="100" y2="120"/>
+        <line x1="200" y1="0" x2="200" y2="120"/>
+        <line x1="300" y1="0" x2="300" y2="120"/>
+        <line x1="400" y1="0" x2="400" y2="120"/>
+        <line x1="500" y1="0" x2="500" y2="120"/>
+        <line x1="600" y1="0" x2="600" y2="120"/>
+        <line x1="700" y1="0" x2="700" y2="120"/>
+        <line x1="800" y1="0" x2="800" y2="120"/>
+      </g>
+      <!-- ECG waveform: two full cycles -->
+      <path class="ecg-path" d="
+        M 0,60
+        L 30,60 L 40,52 L 50,68 L 60,60
+        L 75,60 L 80,58 L 85,20 L 90,100 L 95,58 L 100,60
+        L 120,60 L 130,48 L 140,60
+        L 200,60
+        L 230,60 L 240,52 L 250,68 L 260,60
+        L 275,60 L 280,58 L 285,20 L 290,100 L 295,58 L 300,60
+        L 320,60 L 330,48 L 340,60
+        L 400,60
+        L 430,60 L 440,52 L 450,68 L 460,60
+        L 475,60 L 480,58 L 485,20 L 490,100 L 495,58 L 500,60
+        L 520,60 L 530,48 L 540,60
+        L 600,60
+        L 630,60 L 640,52 L 650,68 L 660,60
+        L 675,60 L 680,58 L 685,20 L 690,100 L 695,58 L 700,60
+        L 720,60 L 730,48 L 740,60
+        L 800,60
+        L 830,60 L 840,52 L 850,68 L 860,60
+        L 875,60 L 880,58 L 885,20 L 890,100 L 895,58 L 900,60
+      "/>
+    </svg>
+  </div>
+
+  <h1 class="hero-title">Сердце в <span>цифрах</span><br>и волнах</h1>
+  <p class="hero-subtitle">Полная медицинская справка по ЭКГ, аритмиям и электрофизиологии сердца для проекта ECG Arrhythmia Explorer</p>
+
+  <div class="hero-nav">
+    <a href="#anatomy" class="nav-pill">Анатомия ЭКГ</a>
+    <a href="#conduction" class="nav-pill">Проводящая система</a>
+    <a href="#intervals" class="nav-pill">Интервалы</a>
+    <a href="#qtc" class="nav-pill">Коррекция QT</a>
+    <a href="#arrhythmias" class="nav-pill">Аритмии</a>
+    <a href="#axis" class="nav-pill">Электрическая ось</a>
+    <a href="#project" class="nav-pill">О проекте</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- SECTION 1: ANATOMY -->
+<section id="anatomy" class="reveal">
+  <div class="section-label">01 — Основы</div>
+  <h2 class="section-title">Что такое ЭКГ и что она измеряет</h2>
+
+  <p style="color: var(--text-muted); max-width: 700px; margin-bottom: 32px;">
+    Электрокардиограмма — это запись электрической активности сердца во времени. Каждый удар сердца — это волна электрического импульса, которая проходит через миокард по строгому маршруту. ЭКГ фиксирует эту волну и превращает её в характерный «зубчатый» график.
+  </p>
+
+  <div class="wave-explainer">
+    <h3 style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:8px;">Один сердечный цикл на ЭКГ</h3>
+    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:16px;">Наведите на элементы чтобы узнать подробности</p>
+
+    <div class="wave-svg-container">
+      <svg viewBox="0 0 700 200" width="100%" style="min-width:500px;" id="waveSvg">
+        <!-- baseline -->
+        <line x1="20" y1="130" x2="680" y2="130" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+        <!-- Grid -->
+        <g stroke="rgba(255,255,255,0.04)" stroke-width="1">
+          <line x1="20" y1="50" x2="680" y2="50"/>
+          <line x1="20" y1="80" x2="680" y2="80"/>
+          <line x1="20" y1="110" x2="680" y2="110"/>
+          <line x1="20" y1="150" x2="680" y2="150"/>
+          <line x1="20" y1="170" x2="680" y2="170"/>
+          <line x1="100" y1="30" x2="100" y2="185"/>
+          <line x1="180" y1="30" x2="180" y2="185"/>
+          <line x1="260" y1="30" x2="260" y2="185"/>
+          <line x1="340" y1="30" x2="340" y2="185"/>
+          <line x1="420" y1="30" x2="420" y2="185"/>
+          <line x1="500" y1="30" x2="500" y2="185"/>
+          <line x1="580" y1="30" x2="580" y2="185"/>
+        </g>
+
+        <!-- ECG waveform -->
+        <path d="
+          M 20,130
+          L 80,130
+          C 90,130 95,118 100,110 C 105,102 110,118 115,130
+          L 155,130
+          C 160,130 163,128 165,125
+          L 175,48 L 185,175 L 192,125 L 200,130
+          L 230,130
+          C 240,130 255,108 265,110 C 275,112 280,128 290,130
+          L 450,130
+          L 660,130
+        " fill="none" stroke="#00d4ff" stroke-width="2.5" filter="url(#glow)"/>
+
+        <!-- Glow filter -->
+        <defs>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="glowRed">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+
+        <!-- P wave highlight -->
+        <path d="M 80,130 C 90,130 95,118 100,110 C 105,102 110,118 115,130" fill="none" stroke="#ffd43b" stroke-width="3" filter="url(#glow)" id="pWave" style="cursor:pointer"/>
+
+        <!-- QRS highlight -->
+        <path d="M 162,128 L 175,48 L 185,175 L 195,128" fill="none" stroke="#ff6b6b" stroke-width="3" filter="url(#glowRed)" id="qrsWave" style="cursor:pointer"/>
+
+        <!-- T wave highlight -->
+        <path d="M 230,130 C 240,130 255,108 265,110 C 275,112 280,128 290,130" fill="none" stroke="#51cf66" stroke-width="3" filter="url(#glow)" id="tWave" style="cursor:pointer"/>
+
+        <!-- Labels -->
+        <!-- P -->
+        <text x="97" y="98" fill="#ffd43b" font-size="14" font-family="DM Serif Display" text-anchor="middle" style="cursor:pointer" id="labelP">P</text>
+        <line x1="97" y1="102" x2="97" y2="108" stroke="#ffd43b" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- Q R S labels -->
+        <text x="167" y="30" fill="#ff6b6b" font-size="14" font-family="DM Serif Display" text-anchor="middle">Q</text>
+        <text x="175" y="38" fill="#ff6b6b" font-size="14" font-family="DM Serif Display" text-anchor="middle">R</text>
+        <text x="185" y="188" fill="#ff6b6b" font-size="14" font-family="DM Serif Display" text-anchor="middle">S</text>
+
+        <!-- T -->
+        <text x="260" y="95" fill="#51cf66" font-size="14" font-family="DM Serif Display" text-anchor="middle">T</text>
+        <line x1="260" y1="99" x2="260" y2="108" stroke="#51cf66" stroke-width="1" stroke-dasharray="3,2"/>
+
+        <!-- Interval markers -->
+        <!-- PR interval -->
+        <line x1="80" y1="145" x2="167" y2="145" stroke="#ffd43b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="123" y="158" fill="#ffd43b" font-size="10" font-family="JetBrains Mono" text-anchor="middle" opacity="0.8">PR</text>
+
+        <!-- QRS duration -->
+        <line x1="163" y1="155" x2="200" y2="155" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="181" y="168" fill="#ff6b6b" font-size="10" font-family="JetBrains Mono" text-anchor="middle" opacity="0.8">QRS</text>
+
+        <!-- QT interval -->
+        <line x1="163" y1="175" x2="290" y2="175" stroke="#00d4ff" stroke-width="1.5" stroke-dasharray="4,3" opacity="0.6"/>
+        <text x="226" y="188" fill="#00d4ff" font-size="10" font-family="JetBrains Mono" text-anchor="middle" opacity="0.8">QT interval</text>
+
+        <!-- RR interval -->
+        <line x1="163" y1="138" x2="163" y2="143" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+        <line x1="163" y1="141" x2="580" y2="141" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="6,4"/>
+        <text x="371" y="138" fill="rgba(255,255,255,0.5)" font-size="10" font-family="JetBrains Mono" text-anchor="middle">RR interval</text>
+      </svg>
+    </div>
+
+    <div style="display:flex; flex-wrap:wrap; gap:16px; margin-top:8px;">
+      <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:3px;background:#ffd43b;border-radius:2px;"></div><span style="font-size:0.82rem;color:var(--text-muted)">P — деполяризация предсердий</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:3px;background:#ff6b6b;border-radius:2px;"></div><span style="font-size:0.82rem;color:var(--text-muted)">QRS — деполяризация желудочков</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:3px;background:#51cf66;border-radius:2px;"></div><span style="font-size:0.82rem;color:var(--text-muted)">T — реполяризация желудочков</span></div>
+      <div style="display:flex;align-items:center;gap:8px;"><div style="width:16px;height:3px;background:#00d4ff;border-radius:2px;"></div><span style="font-size:0.82rem;color:var(--text-muted)">QT — полное время электрической систолы</span></div>
+    </div>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-badge badge-warning">P-волна</div>
+      <div class="card-title">Деполяризация предсердий</div>
+      <div class="card-text">Синусовый узел посылает импульс — предсердия возбуждаются и сокращаются, «доливая» кровь в желудочки. Длительность <span class="highlight">80–120 мс</span>.<br><br><strong>Если P нет</strong> → синусовый узел не управляет ритмом (AFIB, трепетание предсердий)</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-danger">QRS-комплекс</div>
+      <div class="card-title">Деполяризация желудочков</div>
+      <div class="card-text">Самый мощный элемент — масса желудочков огромна. Импульс мчится по пучку Гиса и волокнам Пуркинье. Норма <span class="highlight">80–120 мс</span>.<br><br><strong>Расширение >120 мс</strong> → блокада ножки пучка Гиса</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-normal">T-волна</div>
+      <div class="card-title">Реполяризация желудочков</div>
+      <div class="card-text">Восстановление электрического потенциала клеток миокарда. Направление T в норме совпадает с QRS.<br><br><strong>Инверсия T</strong> → ишемия, гипертрофия, электролитные нарушения</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-info">RR-интервал</div>
+      <div class="card-title">Расстояние между ударами</div>
+      <div class="card-text">Время между двумя соседними QRS-комплексами в мс. Обратно пропорционален ЧСС:<br><span class="highlight" style="font-family:'JetBrains Mono',monospace;">ЧСС = 60 000 / RR</span><br><br>При ЧСС 71 → RR ≈ 845 мс ✓</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 2: CONDUCTION -->
+<section id="conduction" class="reveal">
+  <div class="section-label">02 — Физиология</div>
+  <h2 class="section-title">Проводящая система сердца</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Сердце не сокращается хаотично — у него есть собственная «электрическая проводка», которая направляет импульс по строгому маршруту сверху вниз. Каждый элемент этой системы оставляет след на ЭКГ.
+  </p>
+
+  <div class="conduction-flow">
+    <div class="conduction-node">
+      <div class="node-title">Синусовый узел (SA)</div>
+      <div class="node-desc">Водитель ритма. Правое предсердие. 60–100 имп/мин</div>
+    </div>
+    <div class="conduction-arrow">
+      <div class="arrow-line"></div>
+      <div style="font-size:0.65rem;color:var(--text-dim);margin-top:4px;">P-волна</div>
+    </div>
+    <div class="conduction-node">
+      <div class="node-title">AV-узел</div>
+      <div class="node-desc">Привратник. Задерживает импульс на 120–200 мс → PR-интервал</div>
+    </div>
+    <div class="conduction-arrow">
+      <div class="arrow-line"></div>
+      <div style="font-size:0.65rem;color:var(--text-dim);margin-top:4px;"></div>
+    </div>
+    <div class="conduction-node">
+      <div class="node-title">Пучок Гиса</div>
+      <div class="node-desc">Разделяется на левую и правую ножки</div>
+    </div>
+    <div class="conduction-arrow">
+      <div class="arrow-line"></div>
+    </div>
+    <div class="conduction-node">
+      <div class="node-title">Волокна Пуркинье</div>
+      <div class="node-desc">Быстрое распространение по желудочкам → QRS</div>
+    </div>
+    <div class="conduction-arrow">
+      <div class="arrow-line"></div>
+      <div style="font-size:0.65rem;color:var(--text-dim);margin-top:4px;">QRS</div>
+    </div>
+    <div class="conduction-node">
+      <div class="node-title">Рабочий миокард</div>
+      <div class="node-desc">Сокращение желудочков → выброс крови</div>
+    </div>
+  </div>
+
+  <div class="cards-grid" style="margin-top:32px;">
+    <div class="card">
+      <div class="card-badge badge-warning">RBBB / CRBBB</div>
+      <div class="card-title">Блокада правой ножки</div>
+      <div class="card-text">Правый желудочек деполяризуется медленно — через рабочий миокард в обход нормальной проводки. QRS расширяется <span class="highlight-red">>120 мс</span>. Характерная «М-образная» форма в V1. Часто доброкачественна.</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-danger">LBBB / CLBBB</div>
+      <div class="card-title">Блокада левой ножки</div>
+      <div class="card-text">Оба желудочка деполяризуются аномально. Сильное расширение QRS <span class="highlight-red">>120 мс</span>, полная перестройка морфологии. Клинически серьёзнее RBBB — часто признак органического заболевания сердца.</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-info">1AVB / 2AVB / 3AVB</div>
+      <div class="card-title">AV-блокады</div>
+      <div class="card-text"><strong>1-я степень:</strong> PR >200 мс, все импульсы проводятся.<br><strong>2-я степень:</strong> часть импульсов блокируется.<br><strong>3-я степень:</strong> полная блокада — предсердия и желудочки независимы. <span class="highlight-red">Жизнеугрожающее состояние.</span></div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-warning">LAFB</div>
+      <div class="card-title">Блокада передней ветви</div>
+      <div class="card-text">Блокада передней ветви левой ножки. Ось QRS уходит влево (<span class="highlight-red">&lt;−30°</span>). Часто сочетается с RBBB. Типична для пациентов с гипертрофией ЛЖ.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 3: INTERVALS -->
+<section id="intervals" class="reveal">
+  <div class="section-label">03 — Параметры</div>
+  <h2 class="section-title">Клинические нормы интервалов</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Каждый интервал ЭКГ имеет строгие границы нормы. Выход за эти границы — диагностический сигнал. Вот полный справочник с визуальными шкалами.
+  </p>
+
+  <!-- Interactive Heart Rate -->
+  <div class="hr-interactive">
+    <div style="font-size:0.85rem;color:var(--text-muted);margin-bottom:8px;font-family:'JetBrains Mono',monospace;">ИНТЕРАКТИВ — частота сердечных сокращений</div>
+    <div class="hr-display" id="hrDisplay">72</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--text-muted);margin-bottom:16px;">уд/мин</div>
+    <input type="range" class="hr-slider" id="hrSlider" min="20" max="220" value="72">
+    <div class="hr-label">RR-интервал: <span id="rrDisplay" style="color:var(--accent);font-family:'JetBrains Mono',monospace;">833 мс</span></div>
+    <div class="hr-group-badge" id="hrGroupBadge">normal_hr</div>
+  </div>
+
+  <table class="interval-table">
+    <thead>
+      <tr>
+        <th>Параметр</th>
+        <th>Норма</th>
+        <th>Патология</th>
+        <th>Диагноз при отклонении</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Heart Rate</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">ЧСС (уд/мин)</span></td>
+        <td><span class="val-normal">60–100</span></td>
+        <td><span class="val-danger">&lt;60 или &gt;100</span></td>
+        <td>Брадикардия / Тахикардия</td>
+      </tr>
+      <tr>
+        <td><strong>PR interval</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Проведение через AV-узел (мс)</span></td>
+        <td><span class="val-normal">120–200</span></td>
+        <td><span class="val-danger">&gt;200 мс</span> / <span class="val-danger">&lt;120 мс</span></td>
+        <td>AV-блокада 1° / WPW-синдром</td>
+      </tr>
+      <tr>
+        <td><strong>QRS duration</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Деполяризация желудочков (мс)</span></td>
+        <td><span class="val-normal">80–120</span></td>
+        <td><span class="val-danger">&gt;120 мс</span></td>
+        <td>Блокада ножки (LBBB, RBBB)</td>
+      </tr>
+      <tr>
+        <td><strong>QT interval</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Электрическая систола (мс)</span></td>
+        <td><span class="val-normal">зависит от ЧСС</span></td>
+        <td>см. QTc ниже</td>
+        <td>Синдром удлинённого QT</td>
+      </tr>
+      <tr>
+        <td><strong>QTc (Bazett)</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Корректированный QT (мс)</span></td>
+        <td><span class="val-normal">♂ &lt;450 / ♀ &lt;460</span></td>
+        <td><span class="val-danger">&gt;500 мс</span> — высокий риск</td>
+        <td>LNGQT — риск torsades de pointes</td>
+      </tr>
+      <tr>
+        <td><strong>P duration</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Длительность P-волны (мс)</span></td>
+        <td><span class="val-normal">80–120</span></td>
+        <td><span class="val-danger">&gt;120 мс</span></td>
+        <td>Увеличение левого предсердия (LAO)</td>
+      </tr>
+      <tr>
+        <td><strong>QRS axis</strong><br><span style="font-size:0.8rem;color:var(--text-muted)">Электрическая ось (°)</span></td>
+        <td><span class="val-normal">−30° до +90°</span></td>
+        <td><span class="val-danger">&lt;−30° или &gt;+90°</span></td>
+        <td>Левое / правое отклонение оси</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="cards-grid" style="margin-top:24px;">
+    <div class="card">
+      <div class="card-badge badge-danger">Возраст → PR</div>
+      <div class="card-title">PR растёт с возрастом</div>
+      <div class="card-text">С возрастом AV-узел фиброзируется и замедляет проведение. У пожилых (senior) медианный PR-интервал закономерно длиннее, чем у молодых. Это хорошо видно на boxplot PR по age_group.</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-warning">ЧСС → QT</div>
+      <div class="card-title">QT обратно зависит от ЧСС</div>
+      <div class="card-text">При тахикардии клетки миокарда реполяризуются быстрее — QT укорачивается. При брадикардии — удлиняется. Поэтому сравнивают не QT, а <strong>QTc</strong> — скорректированный на ЧСС интервал.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 4: QTc -->
+<section id="qtc" class="reveal">
+  <div class="section-label">04 — Коррекция QT</div>
+  <h2 class="section-title">Три формулы QTc и почему это важно</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Удлинённый QT-интервал — один из главных маркёров риска внезапной смерти. Но QT зависит от ЧСС, поэтому его нельзя сравнивать напрямую. Нужна коррекция — приведение к «стандартной» ЧСС 60 уд/мин.
+  </p>
+
+  <div class="formula-cards">
+    <div class="formula-card">
+      <div class="card-badge badge-warning">1920 г.</div>
+      <div class="formula-name">Формула Базетта</div>
+      <div class="formula-math">QTc = QT / √RR</div>
+      <div class="formula-note">Исторический стандарт. <span style="color:var(--accent2)">Гиперкорректирует при тахикардии</span> — даёт завышенные значения при ЧСС >100. При брадикардии недооценивает. Самая распространённая, но наименее точная при крайних ЧСС.</div>
+    </div>
+    <div class="formula-card">
+      <div class="card-badge badge-normal">Рекомендуется</div>
+      <div class="formula-name">Формула Фридерициа</div>
+      <div class="formula-math">QTc = QT / ∛RR</div>
+      <div class="formula-note">Кубический корень вместо квадратного. <span style="color:var(--accent3)">Более линейна</span>, лучше работает при тахикардии (ЧСС >90). Предпочтительна в клинических исследованиях.</div>
+    </div>
+    <div class="formula-card">
+      <div class="card-badge badge-info">Линейная</div>
+      <div class="formula-name">Формула Фрамингема</div>
+      <div class="formula-math">QTc = QT + 0.154×(1−RR)</div>
+      <div class="formula-note">Линейная поправка. Хорошо работает при нормальном ритме. Меньше ошибок при средних значениях ЧСС.</div>
+    </div>
+  </div>
+
+  <div class="wave-explainer" style="margin-top:32px;">
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:16px;">Почему Базетт завышает QTc при тахикардии</h3>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:12px;">При ЧСС = 60 (норма)</div>
+        <div style="background:var(--surface2);border-radius:8px;padding:16px;font-size:0.85rem;line-height:1.8;">
+          RR = 1000 мс = 1.0 сек<br>
+          √RR = √1.0 = <span style="color:var(--accent3)">1.000</span><br>
+          QT = 400 мс<br>
+          QTc = 400 / 1.000 = <span style="color:var(--accent3);font-weight:600;">400 мс ✓</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent2);margin-bottom:12px;">При ЧСС = 150 (тахикардия)</div>
+        <div style="background:var(--surface2);border-radius:8px;padding:16px;font-size:0.85rem;line-height:1.8;">
+          RR = 400 мс = 0.4 сек<br>
+          √RR = √0.4 = <span style="color:var(--accent2)">0.632</span><br>
+          QT = 300 мс (физ. норма)<br>
+          QTc = 300 / 0.632 = <span style="color:var(--accent2);font-weight:600;">475 мс ⚠️</span>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:16px;">
+      При тахикардии QT физиологически укорачивается до ~300 мс, что является <strong>нормой</strong>. Но формула Базетта, деля на √0.4 ≈ 0.63, «раздувает» значение до 475 мс — выше клинического порога в 450 мс. Это <span style="color:var(--accent2)">ложноположительная диагностика</span> синдрома удлинённого QT.
+    </p>
+
+    <p style="font-size:0.85rem;color:var(--text-muted);margin-top:8px;">
+      Колонка <span style="font-family:'JetBrains Mono',monospace;color:var(--accent)">qtc_spread</span> в датасете — это разброс между тремя формулами. <strong>Высокий spread = ненадёжность Базетта для данного пациента.</strong> Ожидается, что spread максимален в группе tachycardia.
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 5: ARRHYTHMIAS -->
+<section id="arrhythmias" class="reveal">
+  <div class="section-label">05 — Аритмии</div>
+  <h2 class="section-title">Виды аритмий в датасете PTB-XL</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Аритмия — любое нарушение нормального ритма сердца по частоте, регулярности или месту возникновения. В датасете они закодированы в SCP-колонках.
+  </p>
+
+  <div class="arrhythmia-grid">
+
+    <div class="arrh-card danger">
+      <div class="arrh-header">
+        <span class="arrh-code">AFIB</span>
+        <span class="arrh-name">Фибрилляция предсердий</span>
+      </div>
+      <!-- AFIB ECG: no P-waves, irregular RR -->
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 15,23 L 20,27 L 25,25
+          L 35,25 L 38,10 L 42,40 L 46,25
+          L 60,25 L 63,22 L 68,28 L 73,25
+          L 80,25 L 84,12 L 88,38 L 92,25
+          L 100,25 L 104,22 L 108,28 L 112,25
+          L 125,25 L 129,8 L 133,42 L 137,25
+          L 143,25 L 147,23 L 152,27 L 157,25
+          L 167,25 L 171,11 L 175,39 L 179,25
+          L 192,25 L 196,9 L 200,41 L 204,25
+          L 215,25 L 219,22 L 224,28 L 229,25
+          L 240,25 L 244,10 L 248,40 L 252,25
+          L 260,25 L 264,23 L 268,27 L 273,25
+          L 285,25 L 289,7 L 293,43 L 297,25 L 300,25"
+          fill="none" stroke="#ff6b6b" stroke-width="1.5" filter="url(#glow)"/>
+      </svg>
+      <ul class="arrh-features">
+        <li><strong>Нет P-волн</strong> — синусовый узел не управляет</li>
+        <li>Нерегулярный RR-интервал — хаотичный желудочковый ответ</li>
+        <li>p_found = 0 в датасете</li>
+        <li>ЧСС обычно 80–160 уд/мин</li>
+        <li>Риск тромбоза → инсульт</li>
+      </ul>
+    </div>
+
+    <div class="arrh-card safe">
+      <div class="arrh-header">
+        <span class="arrh-code">SR / NORM</span>
+        <span class="arrh-name">Синусовый ритм (норма)</span>
+      </div>
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 20,25 C 25,25 28,18 31,15 C 34,22 37,25 40,25
+          L 55,25 C 57,25 58,24 59,22 L 62,8 L 65,42 L 68,22 L 70,25
+          L 80,25 C 85,25 92,16 98,17 C 104,18 108,24 113,25
+          L 150,25
+          L 170,25 C 175,25 178,18 181,15 C 184,22 187,25 190,25
+          L 205,25 C 207,25 208,24 209,22 L 212,8 L 215,42 L 218,22 L 220,25
+          L 230,25 C 235,25 242,16 248,17 C 254,18 258,24 263,25
+          L 300,25"
+          fill="none" stroke="#51cf66" stroke-width="1.5" filter="url(#glow)"/>
+      </svg>
+      <ul class="arrh-features">
+        <li>Регулярный RR-интервал</li>
+        <li>Чёткие P-волны перед каждым QRS</li>
+        <li>PR 120–200 мс, QRS &lt;120 мс</li>
+        <li>ЧСС 60–100 уд/мин</li>
+      </ul>
+    </div>
+
+    <div class="arrh-card warning">
+      <div class="arrh-header">
+        <span class="arrh-code">STACH</span>
+        <span class="arrh-name">Синусовая тахикардия</span>
+      </div>
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 8,25 C 11,25 13,19 15,17 C 17,21 19,25 22,25
+          L 28,25 L 30,22 L 32,8 L 34,42 L 36,22 L 38,25
+          L 44,25 C 47,25 52,17 56,18 C 60,19 63,24 66,25
+          L 80,25
+          L 88,25 C 91,25 93,19 95,17 C 97,21 99,25 102,25
+          L 108,25 L 110,22 L 112,8 L 114,42 L 116,22 L 118,25
+          L 124,25 C 127,25 132,17 136,18 C 140,19 143,24 146,25
+          L 158,25
+          L 166,25 C 169,25 171,19 173,17 C 175,21 177,25 180,25
+          L 186,25 L 188,22 L 190,8 L 192,42 L 194,22 L 196,25
+          L 202,25 C 205,25 210,17 214,18 C 218,19 221,24 224,25
+          L 236,25
+          L 244,25 C 247,25 249,19 251,17 C 253,21 255,25 258,25
+          L 264,25 L 266,22 L 268,8 L 270,42 L 272,22 L 274,25
+          L 280,25 C 283,25 288,17 292,18 C 296,19 299,24 300,25"
+          fill="none" stroke="#ffd43b" stroke-width="1.5"/>
+      </svg>
+      <ul class="arrh-features">
+        <li>ЧСС <strong>&gt;100 уд/мин</strong>, часто 100–160</li>
+        <li>P-волны есть, регулярные</li>
+        <li>QT укорочен физиологически</li>
+        <li>Причины: стресс, анемия, тиреотоксикоз, лихорадка</li>
+      </ul>
+    </div>
+
+    <div class="arrh-card safe">
+      <div class="arrh-header">
+        <span class="arrh-code">SBRAD</span>
+        <span class="arrh-name">Синусовая брадикардия</span>
+      </div>
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 30,25 C 36,25 40,18 44,15 C 48,22 52,25 56,25
+          L 75,25 L 78,22 L 81,7 L 84,43 L 87,22 L 90,25
+          L 108,25 C 115,25 122,15 129,16 C 136,17 142,24 148,25
+          L 250,25
+          L 258,25 C 264,25 268,18 272,15 C 276,22 280,25 284,25
+          L 295,25 L 298,22 L 300,18"
+          fill="none" stroke="#51cf66" stroke-width="1.5"/>
+      </svg>
+      <ul class="arrh-features">
+        <li>ЧСС <strong>&lt;60 уд/мин</strong></li>
+        <li>P-волны есть, регулярные, длинный RR</li>
+        <li>QT физиологически удлинён</li>
+        <li>У спортсменов — норма. Патол.: гипотиреоз, бета-блокаторы</li>
+      </ul>
+    </div>
+
+    <div class="arrh-card danger">
+      <div class="arrh-header">
+        <span class="arrh-code">CRBBB / CLBBB</span>
+        <span class="arrh-name">Блокады ножек пучка Гиса</span>
+      </div>
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 30,25 C 35,25 38,19 41,16 C 44,22 47,25 50,25
+          L 60,25 L 62,22 L 65,8 L 72,40 L 76,8 L 80,38 L 84,22 L 87,25
+          L 115,25 C 122,25 130,14 137,15 C 144,16 150,23 157,25
+          L 180,25
+          L 210,25 C 215,25 218,19 221,16 C 224,22 227,25 230,25
+          L 240,25 L 242,22 L 245,8 L 252,40 L 256,8 L 260,38 L 264,22 L 267,25
+          L 295,25 L 298,22 L 300,20"
+          fill="none" stroke="#ff6b6b" stroke-width="1.5"/>
+      </svg>
+      <ul class="arrh-features">
+        <li><strong>QRS &gt;120 мс</strong> — характерный признак</li>
+        <li>Аномальная морфология комплекса</li>
+        <li>LBBB: полная перестройка реполяризации</li>
+        <li>QT физиологически удлинён при блокаде</li>
+      </ul>
+    </div>
+
+    <div class="arrh-card warning">
+      <div class="arrh-header">
+        <span class="arrh-code">WPW</span>
+        <span class="arrh-name">Синдром Вольфа-Паркинсона-Уайта</span>
+      </div>
+      <svg class="arrh-ecg-mini" viewBox="0 0 300 50" width="100%">
+        <line x1="0" y1="25" x2="300" y2="25" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <path d="M 0,25 L 25,25 C 30,25 33,19 36,16 C 39,22 42,25 45,25
+          L 49,25 C 50,25 52,22 54,20 L 57,7 L 62,40 L 66,22 L 70,25
+          L 100,25 C 107,25 116,14 123,15 C 130,16 136,23 143,25
+          L 170,25
+          L 195,25 C 200,25 203,19 206,16 C 209,22 212,25 215,25
+          L 219,25 C 220,25 222,22 224,20 L 227,7 L 232,40 L 236,22 L 240,25
+          L 270,25 L 300,25"
+          fill="none" stroke="#ffd43b" stroke-width="1.5"/>
+      </svg>
+      <ul class="arrh-features">
+        <li>Аномальный пучок Кента — обход AV-узла</li>
+        <li><strong>PR &lt;120 мс</strong> — импульс доходит раньше</li>
+        <li>Дельта-волна в начале QRS</li>
+        <li>Опасен: при AFIB может провести 300+ имп/мин прямо в желудочки</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 6: AXIS -->
+<section id="axis" class="reveal">
+  <div class="section-label">06 — Ось сердца</div>
+  <h2 class="section-title">Электрическая ось QRS</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Электрическая ось — суммарное направление вектора деполяризации желудочков во фронтальной плоскости. Выражается в градусах. Отклонение оси — диагностический признак блокад, гипертрофии и инфарктов.
+  </p>
+
+  <div class="axis-diagram">
+    <svg viewBox="0 0 400 400" width="380" height="380" style="max-width:100%;">
+      <!-- Background -->
+      <circle cx="200" cy="200" r="170" fill="var(--surface)" stroke="var(--border)" stroke-width="1"/>
+
+      <!-- Degree rings -->
+      <circle cx="200" cy="200" r="130" fill="none" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="4,6"/>
+      <circle cx="200" cy="200" r="85" fill="none" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="2,6"/>
+
+      <!-- Zone fills -->
+      <!-- Normal zone: -30 to +90 -->
+      <path d="M 200,200 L 313,130 A 130,130 0 0,1 200,330 Z" fill="rgba(81,207,102,0.12)" stroke="rgba(81,207,102,0.3)" stroke-width="1"/>
+
+      <!-- Left deviation: -30 to -90 -->
+      <path d="M 200,200 L 200,70 A 130,130 0 0,0 313,130 Z" fill="rgba(255,212,59,0.1)" stroke="rgba(255,212,59,0.25)" stroke-width="1"/>
+
+      <!-- Right deviation: +90 to +180 -->
+      <path d="M 200,200 L 200,330 A 130,130 0 0,1 70,200 Z" fill="rgba(255,107,107,0.1)" stroke="rgba(255,107,107,0.25)" stroke-width="1"/>
+
+      <!-- Axes lines -->
+      <line x1="30" y1="200" x2="370" y2="200" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <line x1="200" y1="30" x2="200" y2="370" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+
+      <!-- Degree marks -->
+      <g fill="var(--text-dim)" font-size="12" font-family="JetBrains Mono" text-anchor="middle">
+        <text x="200" y="26">−90°</text>
+        <text x="200" y="382">+90°</text>
+        <text x="375" y="204">0°</text>
+        <text x="18" y="204">±180°</text>
+        <text x="315" y="140">−30°</text>
+        <text x="82" y="140">−150°</text>
+        <text x="315" y="268">+30°</text>
+        <text x="82" y="268">+150°</text>
+        <text x="358" y="340">+60°</text>
+      </g>
+
+      <!-- Zone labels -->
+      <text x="270" y="265" fill="rgba(81,207,102,0.8)" font-size="11" font-family="DM Sans" text-anchor="middle">НОРМА</text>
+      <text x="270" y="278" fill="rgba(81,207,102,0.6)" font-size="9" font-family="JetBrains Mono" text-anchor="middle">−30° до +90°</text>
+
+      <text x="240" y="130" fill="rgba(255,212,59,0.8)" font-size="10" font-family="DM Sans" text-anchor="middle">Лев.</text>
+      <text x="240" y="142" fill="rgba(255,212,59,0.6)" font-size="9" font-family="JetBrains Mono" text-anchor="middle">откл.</text>
+
+      <text x="120" y="295" fill="rgba(255,107,107,0.8)" font-size="10" font-family="DM Sans" text-anchor="middle">Прав.</text>
+      <text x="120" y="307" fill="rgba(255,107,107,0.6)" font-size="9" font-family="JetBrains Mono" text-anchor="middle">откл.</text>
+
+      <!-- Normal axis arrow (45°) -->
+      <line x1="200" y1="200" x2="287" y2="308" stroke="rgba(81,207,102,0.7)" stroke-width="2.5"/>
+      <polygon points="287,308 278,295 299,299" fill="rgba(81,207,102,0.7)"/>
+
+      <!-- Center dot -->
+      <circle cx="200" cy="200" r="5" fill="var(--accent)"/>
+    </svg>
+  </div>
+
+  <div class="cards-grid">
+    <div class="card">
+      <div class="card-badge badge-normal">−30° до +90°</div>
+      <div class="card-title">Нормальная ось</div>
+      <div class="card-text">87% пациентов в датасете. Импульс распространяется от правого предсердия вниз-влево — в сторону основной массы левого желудочка. Типично для здорового сердца.</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-warning">< −30°</div>
+      <div class="card-title">Левое отклонение оси</div>
+      <div class="card-text">11% пациентов (scp: LAFB, CLBBB, нижний ИМ). Ось уходит влево из-за блокады передней ветви левой ножки или рубца после нижнего инфаркта. Colонка <span style="font-family:'JetBrains Mono',monospace;color:var(--accent)">axis_deviation = left_deviation</span>.</div>
+    </div>
+    <div class="card">
+      <div class="card-badge badge-danger">> +90°</div>
+      <div class="card-title">Правое отклонение оси</div>
+      <div class="card-text">2% пациентов (scp: RVH, RBBB, ТЭЛА). Ось уходит вправо из-за гипертрофии правого желудочка или блокады правой ножки. Реже, но клинически значимо.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SECTION 7: PROJECT -->
+<section id="project" class="reveal">
+  <div class="section-label">07 — Проект</div>
+  <h2 class="section-title">ECG Arrhythmia Explorer — что исследуем</h2>
+
+  <p style="color:var(--text-muted); max-width:700px; margin-bottom:32px;">
+    Датасет: <strong>21 479 записей</strong> ЭКГ из PTB-XL + PTB-XL+. 100 колонок. Реальные клинические данные немецкого кардиологического центра.
+  </p>
+
+  <div class="project-cols">
+    <div class="project-block">
+      <h3>Гипотеза 1</h3>
+      <div class="hypothesis-box">
+        <strong>«Формула Базетта систематически завышает QTc у пациентов с тахикардией, создавая ложноположительные диагнозы синдрома удлинённого QT»</strong>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:12px;">Проверяем: сравниваем qtc_bazett vs qtc_fridericia в группах bradycardia / normal_hr / tachycardia. При тахикардии расхождение должно быть максимальным. qtc_spread по группам ЧСС — ключевой график.</p>
+    </div>
+    <div class="project-block">
+      <h3>Гипотеза 2</h3>
+      <div class="hypothesis-box">
+        <strong>«Пациенты с AFIB имеют достоверно отличающийся профиль RR-интервала и qrs_count по сравнению с пациентами с синусовым ритмом»</strong>
+      </div>
+      <p style="font-size:0.85rem;color:var(--text-muted);margin-top:12px;">AFIB: нет P-волн, хаотичный RR, нерегулярный желудочковый ответ. Сравниваем rr_mean, qrs_count между группами AFIB и SR. Тест Манна-Уитни для проверки значимости.</p>
+    </div>
+  </div>
+
+  <div style="margin-top:32px; background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px;">
+    <h3 style="font-family:'DM Serif Display',serif;font-size:1.3rem;margin-bottom:20px;">Производные колонки датасета</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;">
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">abnormal_flag</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">1 = есть патологический SCP-диагноз. 0 = чистая норма (NORM).</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">num_diagnoses</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">Число активных SCP-кодов. Показывает сложность клинической картины.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">heart_rate_group</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">bradycardia (&lt;55) / normal_hr (55–85) / tachycardia (&gt;85)</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">age_group</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">young (&lt;35) / middle (35–60) / senior (&gt;60)</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">qtc_spread</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">max(Bazett, Frid, Frame) − min(...). Расхождение формул QTc. Ключевой параметр гипотезы 1.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">axis_deviation</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">normal / left_deviation / right_deviation — клиническая категория QRS-оси.</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--accent);margin-bottom:6px;">pr_missing</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);">1 = PR-интервал не измерим (нет P-волны). Клинический маркёр AFIB-группы.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>ECG Medical Reference · Проект ECG Arrhythmia Explorer · PTB-XL + PTB-XL+ / PhysioNet</p>
+  <p style="margin-top:8px;font-size:0.75rem;opacity:0.5;">Справочный материал для учебного проекта по анализу данных</p>
+</footer>
+
+<script>
+  // Sticky nav
+  const nav = document.getElementById('stickyNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > window.innerHeight * 0.8) {
+      nav.classList.add('shown');
+    } else {
+      nav.classList.remove('shown');
+    }
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+
+  // Heart rate interactive
+  const slider = document.getElementById('hrSlider');
+  const hrDisplay = document.getElementById('hrDisplay');
+  const rrDisplay = document.getElementById('rrDisplay');
+  const badge = document.getElementById('hrGroupBadge');
+
+  function updateHR() {
+    const hr = parseInt(slider.value);
+    const rr = Math.round(60000 / hr);
+    hrDisplay.textContent = hr;
+    rrDisplay.textContent = rr + ' мс';
+
+    // Animation speed
+    hrDisplay.style.animationDuration = (60 / hr) + 's';
+
+    if (hr < 55) {
+      badge.textContent = 'bradycardia';
+      badge.style.background = 'rgba(0,212,255,0.15)';
+      badge.style.color = '#00d4ff';
+      badge.style.border = '1px solid rgba(0,212,255,0.3)';
+      hrDisplay.style.color = '#00d4ff';
+      hrDisplay.style.filter = 'drop-shadow(0 0 20px rgba(0,212,255,0.4))';
+    } else if (hr <= 85) {
+      badge.textContent = 'normal_hr';
+      badge.style.background = 'rgba(81,207,102,0.15)';
+      badge.style.color = '#51cf66';
+      badge.style.border = '1px solid rgba(81,207,102,0.3)';
+      hrDisplay.style.color = '#51cf66';
+      hrDisplay.style.filter = 'drop-shadow(0 0 20px rgba(81,207,102,0.4))';
+    } else {
+      badge.textContent = 'tachycardia';
+      badge.style.background = 'rgba(255,107,107,0.15)';
+      badge.style.color = '#ff6b6b';
+      badge.style.border = '1px solid rgba(255,107,107,0.3)';
+      hrDisplay.style.color = '#ff6b6b';
+      hrDisplay.style.filter = 'drop-shadow(0 0 20px rgba(255,71,87,0.4))';
+    }
+  }
+
+  slider.addEventListener('input', updateHR);
+  updateHR();
+</script>
+</body>
+</html>
