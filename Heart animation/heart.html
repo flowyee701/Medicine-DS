@@ -10,13 +10,14 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { height: 100%; }
   body {
-    background: #0a0e1a; color: #e6ebf5;
+    background: #07091a; color: #e6ebf5;
     font-family: 'Inter', -apple-system, sans-serif;
     display: flex; flex-direction: column; overflow: hidden;
   }
   .header {
     padding: 12px 24px; border-bottom: 1px solid #1a2138; flex-shrink: 0;
     display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    background: linear-gradient(180deg, #0d1228, #0a0e1a);
   }
   .header .title h1 { font-weight: 600; font-size: 18px; color: #fff; letter-spacing: 0.2px; }
   .header .title p { font-size: 12px; color: #6b7a99; margin-top: 2px; }
@@ -24,16 +25,17 @@
   .tab {
     background: #050810; border: 1px solid #1a2138; color: #8090b0;
     padding: 8px 16px; border-radius: 7px; cursor: pointer;
-    font-size: 12.5px; font-weight: 500; transition: all 0.15s;
+    font-size: 12.5px; font-weight: 500; transition: all 0.18s;
     font-family: inherit;
   }
   .tab:hover { color: #fff; border-color: #2a3550; }
   .tab.active {
     color: #00d4ff; border-color: #00d4ff;
-    background: rgba(0, 212, 255, 0.08);
+    background: rgba(0, 212, 255, 0.08); box-shadow: 0 0 12px rgba(0, 212, 255, 0.18);
   }
   .tab[data-page="arrhythmia"].active {
-    color: #ff7070; border-color: #ff7070; background: rgba(255, 100, 100, 0.08);
+    color: #ff7878; border-color: #ff7878;
+    background: rgba(255, 100, 100, 0.08); box-shadow: 0 0 12px rgba(255, 100, 100, 0.2);
   }
   .main {
     flex: 1; display: grid; grid-template-columns: 1fr 340px;
@@ -42,7 +44,7 @@
   .stage { display: flex; flex-direction: column; gap: 10px; min-height: 0; }
   .rhythm-selector {
     flex-shrink: 0; display: none; align-items: center; gap: 8px;
-    padding: 10px 14px; background: #0d1224;
+    padding: 10px 14px; background: linear-gradient(180deg, #14101e, #0d0d1c);
     border: 1px solid #2a1818; border-radius: 10px; flex-wrap: wrap;
   }
   .rhythm-selector.show { display: flex; }
@@ -55,28 +57,30 @@
   }
   .rhythm-selector button:hover { color: #fff; border-color: #2a3550; }
   .rhythm-selector button.active {
-    color: #ff7070; border-color: #ff7070; background: rgba(255, 100, 100, 0.08);
+    color: #ff7878; border-color: #ff7878;
+    background: rgba(255, 100, 100, 0.1); box-shadow: 0 0 10px rgba(255, 100, 100, 0.18);
   }
   .heart-wrap {
-    flex: 1; min-height: 0;
-    background: radial-gradient(ellipse at center, #11172a 0%, #07091a 75%);
+    flex: 1; min-height: 0; position: relative;
+    background:
+      radial-gradient(ellipse 65% 55% at 50% 55%, rgba(140, 30, 30, 0.13), transparent 70%),
+      radial-gradient(ellipse at center, #131830 0%, #06081a 78%);
     border: 1px solid #1a2138; border-radius: 12px;
-    position: relative; display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
   .heart-svg { width: 100%; height: 100%; }
   .phase-banner {
     position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
-    background: rgba(10, 14, 26, 0.9); border: 1px solid rgba(255,255,255,0.12);
-    padding: 8px 18px; border-radius: 24px;
-    font-size: 12px; letter-spacing: 1px; text-transform: uppercase; font-weight: 600;
-    opacity: 0; transition: opacity 0.3s, color 0.3s, border-color 0.3s;
+    background: rgba(8, 12, 24, 0.92); border: 1px solid rgba(255,255,255,0.14);
+    padding: 9px 20px; border-radius: 24px; backdrop-filter: blur(6px);
+    font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; font-weight: 600;
+    opacity: 0; transition: opacity 0.35s, color 0.35s, border-color 0.35s, box-shadow 0.35s;
     pointer-events: none; white-space: nowrap;
   }
   .phase-banner.show { opacity: 1; }
   .controls {
     flex-shrink: 0; display: flex; align-items: center; gap: 14px;
-    padding: 10px 14px; background: #0d1224;
+    padding: 10px 14px; background: linear-gradient(180deg, #0e1428, #0a0e1f);
     border: 1px solid #1a2138; border-radius: 10px;
   }
   .play-btn {
@@ -98,15 +102,14 @@
   }
   .slider::-webkit-slider-thumb {
     appearance: none; -webkit-appearance: none;
-    width: 16px; height: 16px; background: #00d4ff;
-    border-radius: 50%; cursor: pointer;
-    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+    width: 16px; height: 16px; background: #00d4ff; border-radius: 50%;
+    cursor: pointer; box-shadow: 0 0 8px rgba(0, 212, 255, 0.7);
     border: 2px solid #0a0e1a;
   }
   .slider::-moz-range-thumb {
-    width: 14px; height: 14px; background: #00d4ff;
-    border-radius: 50%; cursor: pointer; border: 2px solid #0a0e1a;
-    box-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+    width: 14px; height: 14px; background: #00d4ff; border-radius: 50%;
+    cursor: pointer; border: 2px solid #0a0e1a;
+    box-shadow: 0 0 8px rgba(0, 212, 255, 0.7);
   }
   .speed-value {
     font-family: 'JetBrains Mono', monospace; font-size: 13px;
@@ -123,12 +126,15 @@
     color: #00d4ff; border-color: #00d4ff; background: rgba(0, 212, 255, 0.08);
   }
   .ecg-wrap {
-    flex-shrink: 0; height: 180px; background: #050a05;
+    flex-shrink: 0; height: 180px;
+    background: #040a04;
     border: 1px solid #1a2138; border-radius: 12px; overflow: hidden;
+    box-shadow: inset 0 0 30px rgba(0, 50, 0, 0.4);
   }
   .ecg-svg { width: 100%; height: 100%; display: block; }
   .panel {
-    background: #0d1224; border: 1px solid #1a2138; border-radius: 12px;
+    background: linear-gradient(180deg, #0f1428, #0c1022);
+    border: 1px solid #1a2138; border-radius: 12px;
     padding: 18px; display: flex; flex-direction: column; gap: 14px; overflow-y: auto;
   }
   .panel-section h3 {
@@ -152,7 +158,7 @@
   }
   .legend { display: flex; flex-direction: column; gap: 7px; font-size: 12px; }
   .legend-row { display: flex; align-items: center; gap: 10px; color: #aab4cc; }
-  .legend-dot { width: 11px; height: 11px; border-radius: 50%; box-shadow: 0 0 8px currentColor; flex-shrink: 0; }
+  .legend-dot { width: 11px; height: 11px; border-radius: 50%; box-shadow: 0 0 10px currentColor; flex-shrink: 0; }
   .warning-badge {
     display: inline-block; padding: 2px 8px; background: rgba(255, 100, 100, 0.12);
     border: 1px solid rgba(255, 100, 100, 0.4); color: #ff8080;
@@ -160,14 +166,14 @@
     border-radius: 4px; margin-left: 8px; vertical-align: middle;
   }
   text.label {
-    font-family: 'Inter', sans-serif; font-size: 11px; fill: #98a5c0;
+    font-family: 'Inter', sans-serif; font-size: 11px; fill: #b0bcd8;
     font-weight: 500; pointer-events: none;
-    paint-order: stroke; stroke: #0a0e1a; stroke-width: 3.5px; stroke-linejoin: round;
+    paint-order: stroke; stroke: #07091a; stroke-width: 4px; stroke-linejoin: round;
   }
-  text.label.faint { fill: #7a8aac; font-size: 10px; font-weight: 400; }
-  text.vessel-label { fill: #6a7a98; font-size: 9.5px; font-style: italic; font-weight: 400; }
-  .leader { stroke: #4a5575; stroke-width: 0.7; fill: none; }
-  .chamber, .node, .pathway { transition: stroke-width 0.1s; }
+  text.label.faint { fill: #8a98b8; font-size: 10px; font-weight: 400; }
+  text.vessel-label { fill: #7a8aac; font-size: 9.5px; font-style: italic; font-weight: 400; paint-order: stroke; stroke: #07091a; stroke-width: 3px; }
+  .leader { stroke: #5a6580; stroke-width: 0.8; fill: none; opacity: 0.85; }
+  .chamber, .node, .pathway { transition: stroke-width 0.12s; }
 </style>
 </head>
 <body>
@@ -194,99 +200,363 @@
       <div class="phase-banner" id="banner"></div>
       <svg class="heart-svg" id="heart" viewBox="0 0 700 700" preserveAspectRatio="xMidYMid meet">
         <defs>
-          <radialGradient id="grad-ra" cx="0.5" cy="0.5" r="0.7"><stop offset="0%" stop-color="#a82424"/><stop offset="100%" stop-color="#3a0606"/></radialGradient>
-          <radialGradient id="grad-la" cx="0.5" cy="0.5" r="0.7"><stop offset="0%" stop-color="#a82424"/><stop offset="100%" stop-color="#3a0606"/></radialGradient>
-          <radialGradient id="grad-rv" cx="0.35" cy="0.45" r="0.85"><stop offset="0%" stop-color="#8e1818"/><stop offset="100%" stop-color="#240303"/></radialGradient>
-          <radialGradient id="grad-lv" cx="0.5" cy="0.4" r="0.9"><stop offset="0%" stop-color="#a82020"/><stop offset="100%" stop-color="#240303"/></radialGradient>
-          <linearGradient id="grad-aorta" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a86068"/><stop offset="100%" stop-color="#7a4044"/></linearGradient>
-          <linearGradient id="grad-pulm" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a6a98"/><stop offset="100%" stop-color="#365070"/></linearGradient>
-          <linearGradient id="grad-vc" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#3a5680"/><stop offset="100%" stop-color="#284060"/></linearGradient>
-          <linearGradient id="grad-pv" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#92505e"/><stop offset="100%" stop-color="#a86068"/></linearGradient>
-          <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="sglow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          <filter id="surf-shade" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur in="SourceAlpha" stdDeviation="3"/><feOffset dx="2" dy="3" result="off"/><feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <radialGradient id="grad-ra" cx="0.4" cy="0.32" r="0.85">
+            <stop offset="0%" stop-color="#d24545"/><stop offset="38%" stop-color="#a02020"/>
+            <stop offset="85%" stop-color="#4a0808"/><stop offset="100%" stop-color="#1a0303"/>
+          </radialGradient>
+          <radialGradient id="grad-la" cx="0.6" cy="0.32" r="0.85">
+            <stop offset="0%" stop-color="#d24545"/><stop offset="38%" stop-color="#a02020"/>
+            <stop offset="85%" stop-color="#4a0808"/><stop offset="100%" stop-color="#1a0303"/>
+          </radialGradient>
+          <radialGradient id="grad-rv" cx="0.3" cy="0.35" r="0.95">
+            <stop offset="0%" stop-color="#b83030"/><stop offset="32%" stop-color="#8a1818"/>
+            <stop offset="85%" stop-color="#3a0606"/><stop offset="100%" stop-color="#150202"/>
+          </radialGradient>
+          <radialGradient id="grad-lv" cx="0.48" cy="0.32" r="1">
+            <stop offset="0%" stop-color="#c83838"/><stop offset="32%" stop-color="#a02020"/>
+            <stop offset="85%" stop-color="#3a0606"/><stop offset="100%" stop-color="#150202"/>
+          </radialGradient>
+          <radialGradient id="hl-light" cx="0.3" cy="0.22" r="0.6">
+            <stop offset="0%" stop-color="#ffbcbc" stop-opacity="0.55"/>
+            <stop offset="40%" stop-color="#ff8080" stop-opacity="0.16"/>
+            <stop offset="100%" stop-color="#ff8080" stop-opacity="0"/>
+          </radialGradient>
+
+          <radialGradient id="wave-ra" cx="258" cy="215" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fffce8" stop-opacity="0.98"/>
+            <stop offset="35%" stop-color="#fff099" stop-opacity="0.92"/>
+            <stop offset="70%" stop-color="#ffd700" stop-opacity="0.75"/>
+            <stop offset="92%" stop-color="#ffa800" stop-opacity="0.42"/>
+            <stop offset="100%" stop-color="#ffa800" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="wave-la" cx="345" cy="240" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fffce8" stop-opacity="0.98"/>
+            <stop offset="35%" stop-color="#fff099" stop-opacity="0.92"/>
+            <stop offset="70%" stop-color="#ffd700" stop-opacity="0.75"/>
+            <stop offset="92%" stop-color="#ffa800" stop-opacity="0.42"/>
+            <stop offset="100%" stop-color="#ffa800" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="wave-rv" cx="240" cy="500" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ffeed0" stop-opacity="1"/>
+            <stop offset="35%" stop-color="#ffae6e" stop-opacity="0.95"/>
+            <stop offset="70%" stop-color="#ff5e1a" stop-opacity="0.82"/>
+            <stop offset="92%" stop-color="#ff4500" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#ff4500" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="wave-lv" cx="430" cy="560" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ffeed0" stop-opacity="1"/>
+            <stop offset="35%" stop-color="#ffae6e" stop-opacity="0.95"/>
+            <stop offset="70%" stop-color="#ff5e1a" stop-opacity="0.82"/>
+            <stop offset="92%" stop-color="#ff4500" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#ff4500" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rep-rv" cx="240" cy="500" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0ffe8" stop-opacity="0.92"/>
+            <stop offset="40%" stop-color="#a8f0b0" stop-opacity="0.78"/>
+            <stop offset="75%" stop-color="#51cf66" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#51cf66" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="rep-lv" cx="430" cy="560" r="0" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#f0ffe8" stop-opacity="0.92"/>
+            <stop offset="40%" stop-color="#a8f0b0" stop-opacity="0.78"/>
+            <stop offset="75%" stop-color="#51cf66" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#51cf66" stop-opacity="0"/>
+          </radialGradient>
+          <!-- Edge highlight for crisp silhouette -->
+          <radialGradient id="rim-light" cx="0.5" cy="0.5" r="0.55">
+            <stop offset="80%" stop-color="#ff9090" stop-opacity="0"/>
+            <stop offset="95%" stop-color="#ff5050" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#ff3030" stop-opacity="0.05"/>
+          </radialGradient>
+
+          <linearGradient id="grad-aorta" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c47880"/><stop offset="50%" stop-color="#9a5560"/>
+            <stop offset="100%" stop-color="#5a3038"/>
+          </linearGradient>
+          <linearGradient id="grad-pulm" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#5a82b0"/><stop offset="50%" stop-color="#3e5878"/>
+            <stop offset="100%" stop-color="#283c5a"/>
+          </linearGradient>
+          <linearGradient id="grad-vc" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3e5e88"/><stop offset="100%" stop-color="#283c5a"/>
+          </linearGradient>
+          <linearGradient id="grad-pv" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#a86070"/><stop offset="100%" stop-color="#7a4048"/>
+          </linearGradient>
+
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="sglow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="6" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="shade" x="-15%" y="-15%" width="130%" height="130%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="5"/>
+            <feOffset dx="3" dy="5" result="off"/>
+            <feComponentTransfer><feFuncA type="linear" slope="0.55"/></feComponentTransfer>
+            <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="bg-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="35"/>
+          </filter>
+
+          <path id="path-ra" d="M 340 202 C 308 190, 252 188, 218 208 C 175 230, 160 280, 198 322 L 340 322 Z"/>
+          <!-- Right auricle: broad, triangular leaf shape (pectinate-muscle filled in real anatomy) -->
+          <path id="path-ra-aur" d="M 230 198 C 198 168, 218 128, 260 130 C 290 138, 296 178, 278 198 C 262 206, 244 206, 230 198 Z"/>
+          <path id="path-la" d="M 350 202 C 388 190, 442 188, 478 208 C 520 230, 532 280, 492 322 L 350 322 Z"/>
+          <!-- Left auricle: characteristic finger-like, narrower curl (real LA appendage is dog-ear shaped) -->
+          <path id="path-la-aur" d="M 444 196 C 462 162, 495 152, 514 172 C 520 192, 510 214, 488 216 C 468 214, 452 208, 444 196 Z"/>
+          <!-- RV: crescent shape wrapping the right antero-lateral aspect of LV -->
+          <path id="path-rv" d="M 200 322 L 345 322 L 340 512 C 308 555, 240 558, 178 528 C 110 492, 82 412, 88 358 C 100 322, 146 318, 200 322 Z"/>
+          <!-- LV: conical, thick-walled, apex pointing down-right (patient's left-inferior) -->
+          <path id="path-lv" d="M 350 322 C 388 318, 458 318, 500 328 C 550 348, 582 408, 582 470 C 570 558, 492 622, 432 632 C 384 628, 348 588, 343 525 L 350 322 Z"/>
         </defs>
 
         <g id="heart-group">
-          <!-- Great vessels -->
+          <ellipse cx="350" cy="430" rx="280" ry="300" fill="#9a1820" opacity="0.07" filter="url(#bg-blur)"/>
+
+          <!-- GREAT VESSELS (drawn behind chambers; emerge from outflow tracts) -->
           <g id="vessels">
-            <path d="M 360 240 C 360 175, 360 110, 415 85 C 490 65, 575 100, 590 165 L 595 30" fill="none" stroke="url(#grad-aorta)" stroke-width="40" stroke-linecap="round"/>
-            <path d="M 310 240 C 295 180, 260 130, 220 115 L 75 105" fill="none" stroke="url(#grad-pulm)" stroke-width="32" stroke-linecap="round"/>
-            <path d="M 270 130 C 330 105, 400 105, 460 115" fill="none" stroke="url(#grad-pulm)" stroke-width="20" stroke-linecap="round" opacity="0.7"/>
-            <path d="M 245 25 L 245 215" fill="none" stroke="url(#grad-vc)" stroke-width="34" stroke-linecap="round"/>
-            <path d="M 240 410 L 252 495" fill="none" stroke="url(#grad-vc)" stroke-width="30" stroke-linecap="round"/>
-            <g stroke="url(#grad-pv)" stroke-width="14" stroke-linecap="round" fill="none">
-              <path d="M 685 215 C 615 218, 555 222, 525 230"/>
-              <path d="M 690 275 C 615 273, 555 270, 525 268"/>
-              <path d="M 15 235 C 90 240, 165 245, 205 252"/>
-              <path d="M 12 295 C 90 295, 165 290, 205 287"/>
+            <!-- Aorta: emerges from LV outflow tract, ascends posterior-right, arches over to descend -->
+            <!-- Aortic root with sinuses of Valsalva (just above aortic valve at LV-aorta junction) -->
+            <ellipse cx="400" cy="305" rx="30" ry="20" fill="url(#grad-aorta)" opacity="0.97"/>
+            <!-- Ascending + arch + start of descending aorta -->
+            <path d="M 400 295 C 400 240, 402 165, 432 120 C 482 88, 555 105, 582 162 C 598 208, 590 30, 590 30"
+                  stroke="url(#grad-aorta)" stroke-width="40" fill="none" stroke-linecap="round"/>
+            <!-- Aortic arch branches (right-to-left as they arise): brachiocephalic, L common carotid, L subclavian -->
+            <path d="M 470 100 L 470 32" stroke="url(#grad-aorta)" stroke-width="16" fill="none" stroke-linecap="round" opacity="0.88"/>
+            <path d="M 505 92 L 505 32" stroke="url(#grad-aorta)" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.88"/>
+            <path d="M 540 95 L 545 32" stroke="url(#grad-aorta)" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.88"/>
+            <!-- Ligamentum arteriosum (fibrous remnant of ductus, connects arch to L pulmonary artery) -->
+            <path d="M 540 145 Q 510 152, 470 148" stroke="#806040" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="3 3"/>
+
+            <!-- Pulmonary trunk: emerges from RV outflow tract (infundibulum), ascends, bifurcates -->
+            <ellipse cx="298" cy="308" rx="26" ry="17" fill="url(#grad-pulm)" opacity="0.97"/>
+            <path d="M 298 295 L 295 158" stroke="url(#grad-pulm)" stroke-width="32" fill="none" stroke-linecap="round"/>
+            <!-- Right pulmonary artery — to right lung (viewer's left); passes posterior to ascending aorta -->
+            <path d="M 295 158 C 240 142, 175 142, 95 126" stroke="url(#grad-pulm)" stroke-width="22" fill="none" stroke-linecap="round" opacity="0.85"/>
+            <!-- Left pulmonary artery — to left lung (viewer's right) -->
+            <path d="M 295 158 C 358 142, 425 146, 462 138" stroke="url(#grad-pulm)" stroke-width="22" fill="none" stroke-linecap="round" opacity="0.85"/>
+
+            <!-- Superior vena cava — enters posterior-superior RA -->
+            <path d="M 250 22 L 254 222" stroke="url(#grad-vc)" stroke-width="36" fill="none" stroke-linecap="round"/>
+            <!-- Inferior vena cava — enters inferior RA -->
+            <path d="M 244 410 L 252 502" stroke="url(#grad-vc)" stroke-width="32" fill="none" stroke-linecap="round"/>
+
+            <!-- Pulmonary veins entering LA (4 — 2 right, 2 left) -->
+            <g stroke="url(#grad-pv)" stroke-width="15" fill="none" stroke-linecap="round">
+              <!-- Left pulmonary veins (from left lung, enter LA laterally) -->
+              <path d="M 685 218 C 615 220, 555 226, 522 235"/>
+              <path d="M 690 282 C 615 282, 555 277, 522 270"/>
+              <!-- Right pulmonary veins (from right lung — cross posteriorly to enter LA medially) -->
+              <path d="M 15 235 C 90 240, 165 248, 202 256"/>
+              <path d="M 10 295 C 90 295, 165 290, 202 285"/>
             </g>
-            <text class="vessel-label" x="610" y="55">Aorta</text>
-            <text class="vessel-label" x="60" y="85">Pulmonary trunk</text>
-            <text class="vessel-label" x="260" y="20">SVC</text>
-            <text class="vessel-label" x="265" y="490">IVC</text>
-            <text class="vessel-label" x="615" y="200">Pulm. veins</text>
+
+            <text class="vessel-label" x="595" y="55">Aortic arch</text>
+            <text class="vessel-label" x="200" y="135" text-anchor="end">Pulmonary trunk</text>
+            <text class="vessel-label" x="58" y="117" text-anchor="end">R. pulm. artery</text>
+            <text class="vessel-label" x="470" y="128">L. pulm. artery</text>
+            <text class="vessel-label" x="265" y="22">SVC</text>
+            <text class="vessel-label" x="265" y="498">IVC</text>
+            <text class="vessel-label" x="615" y="208">L. pulm. veins</text>
+            <text class="vessel-label" x="85" y="225" text-anchor="end">R. pulm. veins</text>
           </g>
 
-          <!-- Chambers -->
+          <!-- HEART CHAMBERS -->
           <g id="ra-group">
-            <path id="ra" class="chamber" filter="url(#surf-shade)" d="M 340 195 C 305 180, 255 180, 220 200 C 175 225, 158 275, 200 320 L 340 320 Z" fill="url(#grad-ra)" stroke="#280505" stroke-width="2"/>
-            <path class="chamber" d="M 235 188 C 215 155, 250 138, 275 162 C 282 180, 262 195, 245 195 Z" fill="url(#grad-ra)" stroke="#280505" stroke-width="1.5"/>
+            <use href="#path-ra" fill="url(#grad-ra)" stroke="#1a0303" stroke-width="2" filter="url(#shade)"/>
+            <use href="#path-ra-aur" fill="url(#grad-ra)" stroke="#1a0303" stroke-width="1.5"/>
+            <use href="#path-ra" fill="url(#hl-light)" opacity="0.55" pointer-events="none"/>
+            <use id="ra-act" href="#path-ra" fill="url(#wave-ra)" opacity="0" pointer-events="none"/>
           </g>
           <g id="la-group">
-            <path id="la" class="chamber" filter="url(#surf-shade)" d="M 350 195 C 390 180, 445 180, 485 200 C 525 225, 535 275, 495 320 L 350 320 Z" fill="url(#grad-la)" stroke="#280505" stroke-width="2"/>
-            <path class="chamber" d="M 440 188 C 470 158, 500 175, 490 200 C 478 215, 450 205, 438 198 Z" fill="url(#grad-la)" stroke="#280505" stroke-width="1.5"/>
+            <use href="#path-la" fill="url(#grad-la)" stroke="#1a0303" stroke-width="2" filter="url(#shade)"/>
+            <use href="#path-la-aur" fill="url(#grad-la)" stroke="#1a0303" stroke-width="1.5"/>
+            <use href="#path-la" fill="url(#hl-light)" opacity="0.55" pointer-events="none"/>
+            <use id="la-act" href="#path-la" fill="url(#wave-la)" opacity="0" pointer-events="none"/>
           </g>
           <g id="rv-group">
-            <path id="rv" class="chamber" filter="url(#surf-shade)" d="M 200 322 L 345 322 L 340 510 C 305 555, 240 555, 180 525 C 115 490, 85 415, 90 360 C 100 325, 145 318, 200 322 Z" fill="url(#grad-rv)" stroke="#280505" stroke-width="2"/>
+            <use href="#path-rv" fill="url(#grad-rv)" stroke="#1a0303" stroke-width="2" filter="url(#shade)"/>
+            <use href="#path-rv" fill="url(#hl-light)" opacity="0.45" pointer-events="none"/>
+            <use id="rv-act" href="#path-rv" fill="url(#wave-rv)" opacity="0" pointer-events="none"/>
+            <use id="rv-rep" href="#path-rv" fill="url(#rep-rv)" opacity="0" pointer-events="none"/>
           </g>
           <g id="lv-group">
-            <path id="lv" class="chamber" filter="url(#surf-shade)" d="M 350 322 C 380 320, 450 318, 495 325 C 545 340, 575 395, 575 460 C 565 540, 495 605, 430 615 C 385 615, 355 580, 345 520 L 350 322 Z" fill="url(#grad-lv)" stroke="#280505" stroke-width="2"/>
-          </g>
-          <path d="M 345 200 L 345 525" stroke="#190303" stroke-width="1.6" opacity="0.75" fill="none"/>
-
-          <!-- Coronary arteries -->
-          <g stroke="#e8c478" stroke-width="2" fill="none" opacity="0.45" stroke-linecap="round">
-            <path d="M 360 318 C 358 380, 365 470, 380 555"/>
-            <path d="M 360 360 C 320 380, 290 395, 265 400"/>
-            <path d="M 360 430 C 330 450, 305 465, 285 475"/>
-            <path d="M 360 500 C 340 530, 320 545, 300 550"/>
-            <path d="M 200 322 C 220 380, 250 460, 310 540"/>
-            <path d="M 230 380 C 200 395, 175 405, 155 410"/>
-            <path d="M 270 450 C 240 470, 215 480, 195 480"/>
+            <use href="#path-lv" fill="url(#grad-lv)" stroke="#1a0303" stroke-width="2" filter="url(#shade)"/>
+            <use href="#path-lv" fill="url(#hl-light)" opacity="0.55" pointer-events="none"/>
+            <use id="lv-act" href="#path-lv" fill="url(#wave-lv)" opacity="0" pointer-events="none"/>
+            <use id="lv-rep" href="#path-lv" fill="url(#rep-lv)" opacity="0" pointer-events="none"/>
           </g>
 
-          <!-- Activation overlays -->
-          <path id="ra-act" d="M 340 195 C 305 180, 255 180, 220 200 C 175 225, 158 275, 200 320 L 340 320 Z" fill="#ffd700" opacity="0" pointer-events="none"/>
-          <path id="la-act" d="M 350 195 C 390 180, 445 180, 485 200 C 525 225, 535 275, 495 320 L 350 320 Z" fill="#ffd700" opacity="0" pointer-events="none"/>
-          <path id="rv-act" d="M 200 322 L 345 322 L 340 510 C 305 555, 240 555, 180 525 C 115 490, 85 415, 90 360 C 100 325, 145 318, 200 322 Z" fill="#ff4500" opacity="0" pointer-events="none"/>
-          <path id="lv-act" d="M 350 322 C 380 320, 450 318, 495 325 C 545 340, 575 395, 575 460 C 565 540, 495 605, 430 615 C 385 615, 355 580, 345 520 L 350 322 Z" fill="#ff4500" opacity="0" pointer-events="none"/>
-          <path id="rv-rep" d="M 200 322 L 345 322 L 340 510 C 305 555, 240 555, 180 525 C 115 490, 85 415, 90 360 C 100 325, 145 318, 200 322 Z" fill="#51cf66" opacity="0" pointer-events="none"/>
-          <path id="lv-rep" d="M 350 322 C 380 320, 450 318, 495 325 C 545 340, 575 395, 575 460 C 565 540, 495 605, 430 615 C 385 615, 355 580, 345 520 L 350 322 Z" fill="#51cf66" opacity="0" pointer-events="none"/>
+          <!-- Septum -->
+          <path d="M 345 200 L 343 528" stroke="#0a0202" stroke-width="2" opacity="0.85" fill="none"/>
 
-          <!-- Conduction system -->
-          <path id="his" class="pathway" d="M 345 322 L 345 370" stroke="#3a4660" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path id="rbb" class="pathway" d="M 345 370 Q 300 410 265 470 Q 235 510 215 530" stroke="#3a4660" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <path id="lbb" class="pathway" d="M 345 370 Q 395 405 430 470 Q 460 520 478 555" stroke="#3a4660" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-          <g id="purkinje" stroke="#3a4660" stroke-width="1.4" fill="none" stroke-linecap="round">
-            <path d="M 215 530 Q 195 555 175 562"/><path d="M 225 510 Q 195 510 160 500"/>
-            <path d="M 235 480 Q 200 470 170 458"/><path d="M 250 450 Q 215 438 185 415"/>
-            <path d="M 478 555 Q 510 580 532 580"/><path d="M 465 530 Q 505 530 540 510"/>
-            <path d="M 450 500 Q 500 490 535 470"/><path d="M 435 475 Q 490 460 525 432"/>
-            <path d="M 220 540 Q 250 565 285 568"/><path d="M 460 575 Q 430 612 390 615"/>
-            <path d="M 350 540 Q 395 595 430 605"/>
+          <!-- Edge rim-light overlays (subtle red glow at chamber periphery for crisp silhouette) -->
+          <use href="#path-ra" fill="url(#rim-light)" opacity="0.5" pointer-events="none"/>
+          <use href="#path-la" fill="url(#rim-light)" opacity="0.5" pointer-events="none"/>
+          <use href="#path-rv" fill="url(#rim-light)" opacity="0.55" pointer-events="none"/>
+          <use href="#path-lv" fill="url(#rim-light)" opacity="0.55" pointer-events="none"/>
+
+          <!-- =============== MYOCARDIAL SURFACE TEXTURE =============== -->
+          <!-- Subtle anatomical detail: pectinate muscles, trabeculae, and helical fiber direction -->
+          <g id="muscle-texture" pointer-events="none">
+            <!-- Right atrium: pectinate muscles (parallel ridges in the RA wall) -->
+            <g stroke="#3a0606" stroke-width="0.7" fill="none" opacity="0.5" stroke-linecap="round">
+              <path d="M 188 232 Q 234 248 286 252"/>
+              <path d="M 180 254 Q 226 270 297 272"/>
+              <path d="M 180 280 Q 226 292 302 292"/>
+              <path d="M 188 304 Q 234 312 310 312"/>
+              <!-- Crista terminalis - landmark ridge -->
+              <path d="M 205 215 Q 218 268 232 316" stroke-width="1" opacity="0.55"/>
+            </g>
+            <!-- Right auricle: dense pectinate muscle hatching -->
+            <g stroke="#3a0606" stroke-width="0.55" fill="none" opacity="0.55" stroke-linecap="round">
+              <path d="M 244 152 L 252 192"/>
+              <path d="M 258 144 L 264 195"/>
+              <path d="M 272 150 L 274 192"/>
+              <path d="M 232 175 Q 258 180 282 178"/>
+            </g>
+            <!-- Left atrium: smoother, fewer markings (LA wall is mostly smooth posteriorly) -->
+            <g stroke="#3a0606" stroke-width="0.55" fill="none" opacity="0.38" stroke-linecap="round">
+              <path d="M 358 235 Q 418 250 480 250"/>
+              <path d="M 358 262 Q 418 274 495 270"/>
+              <path d="M 358 290 Q 418 298 500 292"/>
+              <path d="M 360 312 Q 418 318 488 314"/>
+            </g>
+            <!-- Left auricle: pectinate-like ridges -->
+            <g stroke="#3a0606" stroke-width="0.5" fill="none" opacity="0.5" stroke-linecap="round">
+              <path d="M 458 168 L 472 208"/>
+              <path d="M 478 162 L 488 210"/>
+              <path d="M 498 175 L 500 208"/>
+            </g>
+            <!-- LV: helical myocardial fiber spirals (suggesting the spiral arrangement of myocytes) -->
+            <g stroke="#5a0a0a" stroke-width="0.6" fill="none" opacity="0.42" stroke-linecap="round">
+              <path d="M 358 350 Q 442 372 518 412"/>
+              <path d="M 358 388 Q 448 408 535 446"/>
+              <path d="M 358 425 Q 452 446 545 482"/>
+              <path d="M 358 462 Q 448 484 543 514"/>
+              <path d="M 358 500 Q 432 522 522 545"/>
+              <path d="M 358 538 Q 412 555 492 572"/>
+              <path d="M 360 575 Q 398 585 462 598"/>
+              <path d="M 365 610 Q 398 620 432 628"/>
+              <!-- Counter-spiral (inner layer suggestion) -->
+              <path d="M 502 370 Q 462 422 432 480" opacity="0.5"/>
+              <path d="M 538 420 Q 500 478 466 535" opacity="0.5"/>
+              <path d="M 558 472 Q 522 528 482 580" opacity="0.5"/>
+            </g>
+            <!-- RV: trabeculae carneae (irregular bands on inner RV wall) -->
+            <g stroke="#3a0606" stroke-width="0.55" fill="none" opacity="0.42" stroke-linecap="round">
+              <path d="M 130 360 Q 200 380 318 388"/>
+              <path d="M 108 398 Q 198 418 322 425"/>
+              <path d="M 100 435 Q 192 455 324 462"/>
+              <path d="M 108 472 Q 198 492 326 498"/>
+              <path d="M 125 510 Q 215 530 332 528"/>
+              <!-- Moderator band hint (carries RBB) -->
+              <path d="M 195 488 Q 245 470 290 462" stroke-width="0.9" opacity="0.55"/>
+            </g>
           </g>
 
-          <circle id="sa-node" class="node" cx="258" cy="215" r="7" fill="#3a2a00" stroke="#ffd700" stroke-width="1.4"/>
-          <circle id="av-node" class="node" cx="345" cy="320" r="6" fill="#003040" stroke="#00d4ff" stroke-width="1.4"/>
+          <!-- Atrioventricular sulcus (groove where atria meet ventricles - filled with epicardial fat in life) -->
+          <path d="M 200 322 C 270 320, 420 320, 498 328" stroke="#1a0303" stroke-width="2.5" fill="none" opacity="0.7"/>
+          <path d="M 200 322 C 270 320, 420 320, 498 328" stroke="#f0c860" stroke-width="1.4" fill="none" opacity="0.35" stroke-dasharray="0"/>
 
-          <!-- Impulse markers -->
-          <circle id="atria-wave" cx="258" cy="215" r="0" fill="#ffd700" opacity="0" filter="url(#sglow)"/>
-          <circle id="his-pulse" cx="345" cy="335" r="0" fill="#00d4ff" opacity="0" filter="url(#sglow)"/>
-          <circle id="rbb-pulse" cx="345" cy="370" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
-          <circle id="lbb-pulse" cx="345" cy="370" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+          <!-- =============== CORONARY ARTERIES =============== -->
+          <!-- Anatomical: LMCA → LAD + LCx; RCA → marginal + PDA; with septal perforators and diagonals -->
+          <g id="coronaries" stroke="#f0d690" stroke-width="2.2" fill="none" opacity="0.6" stroke-linecap="round">
+            <!-- LMCA (very short — origin from left coronary sinus) -->
+            <path d="M 365 322 L 355 332" stroke-width="2.8"/>
+            <!-- LAD — descends anterior interventricular sulcus to apex -->
+            <path d="M 355 332 C 354 395, 362 478, 378 562"/>
+            <!-- LAD diagonal branches (D1, D2, D3 to LV anterior wall) -->
+            <path d="M 354 360 C 320 378, 290 392, 260 402"/>
+            <path d="M 356 405 C 324 428, 296 445, 268 458"/>
+            <path d="M 360 458 C 336 486, 310 504, 286 514"/>
+            <path d="M 364 510 C 344 538, 322 552, 300 558" stroke-width="1.8"/>
+            <!-- Septal perforators (short branches into IV septum from LAD) -->
+            <path d="M 355 358 L 344 362" stroke-width="1.3"/>
+            <path d="M 357 405 L 344 410" stroke-width="1.3"/>
+            <path d="M 360 462 L 346 468" stroke-width="1.3"/>
+            <path d="M 363 512 L 348 516" stroke-width="1.3"/>
+            <!-- LCx — circumflex around left AV groove to LV lateral / posterior -->
+            <path d="M 365 322 C 410 318, 470 326, 502 340"/>
+            <path d="M 502 340 C 540 365, 562 412, 565 470"/>
+            <!-- Obtuse marginals (OM1, OM2 from LCx to lateral LV) -->
+            <path d="M 510 358 C 538 380, 555 412, 562 442"/>
+            <path d="M 545 410 C 562 440, 572 472, 568 502"/>
+            <path d="M 562 460 C 568 490, 562 520, 548 545" stroke-width="1.8"/>
 
-          <!-- Arrhythmia-only markers -->
+            <!-- RCA — origin from right coronary sinus, descends along right AV groove -->
+            <path d="M 198 322 C 218 380, 252 462, 312 542"/>
+            <!-- Acute marginal branches (to RV anterior wall) -->
+            <path d="M 220 372 C 195 384, 170 394, 145 398"/>
+            <path d="M 240 418 C 215 432, 188 442, 165 446"/>
+            <path d="M 262 462 C 235 478, 208 488, 185 490"/>
+            <path d="M 285 502 C 260 518, 232 528, 210 530" stroke-width="1.8"/>
+            <!-- Posterior descending artery (PDA) — distal RCA branch around to inferior IV groove -->
+            <path d="M 312 542 C 340 568, 365 580, 388 582" stroke-width="1.7"/>
+            <!-- Right marginal branch at acute margin -->
+            <path d="M 305 530 L 290 555" stroke-width="1.5"/>
+          </g>
+
+          <!-- CONDUCTION SYSTEM (resting tint visible; lights up during activation) -->
+          <path id="his" class="pathway" d="M 345 322 L 345 372"
+                stroke="#4a5a78" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+          <path id="rbb" class="pathway" d="M 345 372 Q 300 412 268 470 Q 240 510 220 528"
+                stroke="#4a5a78" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <path id="lbb" class="pathway" d="M 345 372 Q 395 408 430 470 Q 458 518 478 552"
+                stroke="#4a5a78" stroke-width="2.8" fill="none" stroke-linecap="round"/>
+          <g id="purkinje" stroke="#4a5a78" stroke-width="1.5" fill="none" stroke-linecap="round">
+            <path d="M 220 528 Q 198 552 178 558"/>
+            <path d="M 228 508 Q 196 510 160 500"/>
+            <path d="M 236 478 Q 200 470 170 458"/>
+            <path d="M 250 446 Q 218 436 188 415"/>
+            <path d="M 478 552 Q 510 578 532 578"/>
+            <path d="M 465 528 Q 505 528 540 510"/>
+            <path d="M 450 498 Q 500 488 535 468"/>
+            <path d="M 435 472 Q 490 458 525 432"/>
+            <path d="M 222 540 Q 252 562 288 568"/>
+            <path d="M 462 575 Q 432 612 392 615"/>
+            <path d="M 360 540 Q 400 595 432 605"/>
+            <path d="M 372 558 Q 412 596 442 605"/>
+          </g>
+
+          <!-- NODES with ripple rings -->
+          <circle id="sa-ripple" cx="258" cy="215" r="0" fill="none" stroke="#ffd700" stroke-width="2" opacity="0"/>
+          <circle id="sa-node" class="node" cx="258" cy="215" r="7"
+                  fill="#3a2a00" stroke="#ffd700" stroke-width="1.6"/>
+          <circle id="av-ripple" cx="345" cy="322" r="0" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0"/>
+          <circle id="av-node" class="node" cx="345" cy="322" r="6"
+                  fill="#003040" stroke="#00d4ff" stroke-width="1.6"/>
+
+          <!-- IMPULSE TRAIL CIRCLES -->
+          <g id="atrial-impulse">
+            <circle id="aw-t3" r="0" fill="#ffd700" opacity="0" filter="url(#sglow)"/>
+            <circle id="aw-t2" r="0" fill="#ffd700" opacity="0" filter="url(#sglow)"/>
+            <circle id="aw-t1" r="0" fill="#ffd700" opacity="0" filter="url(#sglow)"/>
+            <circle id="aw-core" r="0" fill="#fff5cc" opacity="0" filter="url(#sglow)"/>
+          </g>
+          <g id="his-impulse">
+            <circle id="hp-t2" r="0" fill="#00d4ff" opacity="0" filter="url(#sglow)"/>
+            <circle id="hp-t1" r="0" fill="#00d4ff" opacity="0" filter="url(#sglow)"/>
+            <circle id="hp-core" r="0" fill="#d0f5ff" opacity="0" filter="url(#sglow)"/>
+          </g>
+          <g id="rbb-impulse">
+            <circle id="rp-t3" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="rp-t2" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="rp-t1" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="rp-core" r="0" fill="#ffe0c0" opacity="0" filter="url(#sglow)"/>
+          </g>
+          <g id="lbb-impulse">
+            <circle id="lp-t3" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="lp-t2" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="lp-t1" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
+            <circle id="lp-core" r="0" fill="#ffe0c0" opacity="0" filter="url(#sglow)"/>
+          </g>
+
+          <!-- ARRHYTHMIA-ONLY MARKERS -->
           <g id="afib-foci">
             <circle class="afib-focus" cx="225" cy="225" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
             <circle class="afib-focus" cx="195" cy="265" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
@@ -294,35 +564,41 @@
             <circle class="afib-focus" cx="275" cy="200" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
             <circle class="afib-focus" cx="385" cy="225" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
             <circle class="afib-focus" cx="440" cy="245" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
-            <circle class="afib-focus" cx="475" cy="280" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
-            <circle class="afib-focus" cx="395" cy="280" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
+            <circle class="afib-focus" cx="475" cy="282" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
+            <circle class="afib-focus" cx="395" cy="282" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
           </g>
           <circle id="aflutter-dot" cx="0" cy="0" r="0" fill="#ffb547" opacity="0" filter="url(#sglow)"/>
           <circle id="ectopic-focus" cx="380" cy="495" r="0" fill="#ff4500" opacity="0" filter="url(#sglow)"/>
           <g id="avb-block" opacity="0">
-            <line x1="332" y1="307" x2="358" y2="333" stroke="#ff5555" stroke-width="3" stroke-linecap="round"/>
-            <line x1="358" y1="307" x2="332" y2="333" stroke="#ff5555" stroke-width="3" stroke-linecap="round"/>
+            <line x1="330" y1="308" x2="360" y2="338" stroke="#ff5050" stroke-width="3.2" stroke-linecap="round"/>
+            <line x1="360" y1="308" x2="330" y2="338" stroke="#ff5050" stroke-width="3.2" stroke-linecap="round"/>
           </g>
 
-          <!-- Labels -->
+          <!-- LABELS -->
           <g class="labels">
-            <path class="leader" d="M 258 208 L 258 152 L 195 152"/>
-            <text class="label" x="190" y="155" text-anchor="end">SA Node</text>
-            <path class="leader" d="M 351 320 L 400 320 L 410 330"/>
-            <text class="label" x="415" y="333">AV Node</text>
-            <path class="leader" d="M 345 345 L 280 345"/>
-            <text class="label" x="276" y="348" text-anchor="end">Bundle of His</text>
-            <path class="leader" d="M 265 470 L 110 470"/>
-            <text class="label" x="105" y="473" text-anchor="end">Right Bundle Branch</text>
-            <path class="leader" d="M 430 470 L 560 470"/>
-            <text class="label" x="565" y="473">Left Bundle Branch</text>
-            <path class="leader" d="M 175 562 L 75 595"/>
-            <text class="label" x="70" y="598" text-anchor="end">Purkinje Fibers</text>
-            <text class="label faint" x="240" y="265" text-anchor="middle">Right Atrium</text>
-            <text class="label faint" x="425" y="265" text-anchor="middle">Left Atrium</text>
-            <text class="label faint" x="210" y="430" text-anchor="middle">Right Ventricle</text>
-            <text class="label faint" x="455" y="475" text-anchor="middle">Left Ventricle</text>
-            <text class="label faint" x="430" y="615" text-anchor="middle" font-style="italic">apex</text>
+            <path class="leader" d="M 254 210 L 200 152 L 140 152"/>
+            <text class="label" x="135" y="155" text-anchor="end">SA Node</text>
+
+            <path class="leader" d="M 352 322 L 405 312 L 425 320"/>
+            <text class="label" x="430" y="324">AV Node</text>
+
+            <path class="leader" d="M 345 348 L 295 348"/>
+            <text class="label" x="291" y="351" text-anchor="end">Bundle of His</text>
+
+            <path class="leader" d="M 268 470 L 130 478"/>
+            <text class="label" x="125" y="481" text-anchor="end">Right Bundle Branch</text>
+
+            <path class="leader" d="M 430 470 L 575 478"/>
+            <text class="label" x="580" y="481">Left Bundle Branch</text>
+
+            <path class="leader" d="M 178 558 L 78 595"/>
+            <text class="label" x="73" y="598" text-anchor="end">Purkinje Fibers</text>
+
+            <text class="label faint" x="240" y="268" text-anchor="middle">Right Atrium</text>
+            <text class="label faint" x="420" y="268" text-anchor="middle">Left Atrium</text>
+            <text class="label faint" x="215" y="430" text-anchor="middle">Right Ventricle</text>
+            <text class="label faint" x="460" y="475" text-anchor="middle">Left Ventricle</text>
+            <text class="label faint" x="442" y="638" text-anchor="middle" font-style="italic">apex</text>
           </g>
         </g>
       </svg>
@@ -350,14 +626,15 @@
         <defs>
           <pattern id="grid-sm" width="8" height="8" patternUnits="userSpaceOnUse"><path d="M 8 0 L 0 0 0 8" fill="none" stroke="#1a3d1a" stroke-width="0.4"/></pattern>
           <pattern id="grid-lg" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="url(#grid-sm)"/><path d="M 40 0 L 0 0 0 40" fill="none" stroke="#2d6b2d" stroke-width="0.8"/></pattern>
-          <filter id="trace-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="trace-glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="cursor-glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
         </defs>
         <rect width="1000" height="220" fill="#040a04"/>
         <rect width="1000" height="220" fill="url(#grid-lg)"/>
         <line x1="0" y1="140" x2="1000" y2="140" stroke="#2a5a2a" stroke-width="0.4" stroke-dasharray="3 4" opacity="0.5"/>
-        <polyline id="ecg-trace" points="" fill="none" stroke="#5ee85e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" filter="url(#trace-glow)"/>
-        <circle id="ecg-cursor" cx="998" cy="140" r="3.5" fill="#c0ffc0" filter="url(#trace-glow)"/>
-        <text id="ecg-label" x="12" y="20" fill="#3a7a3a" font-family="JetBrains Mono, monospace" font-size="10">Lead II  ·  25 mm/s  ·  10 mm/mV  ·  NSR</text>
+        <polyline id="ecg-trace" points="" fill="none" stroke="#60ff60" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round" filter="url(#trace-glow)"/>
+        <circle id="ecg-cursor" cx="998" cy="140" r="4" fill="#d0ffd0" filter="url(#cursor-glow)"/>
+        <text id="ecg-label" x="12" y="20" fill="#3a8a3a" font-family="JetBrains Mono, monospace" font-size="10">Lead II  ·  25 mm/s  ·  10 mm/mV  ·  NSR</text>
       </svg>
     </div>
   </div>
@@ -408,9 +685,6 @@
 </div>
 
 <script>
-// ============================================================
-// SHARED HELPERS
-// ============================================================
 const $ = id => document.getElementById(id);
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp01 = v => v < 0 ? 0 : v > 1 ? 1 : v;
@@ -418,8 +692,8 @@ const easeIO = t => t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
 function applyScale(el, cx, cy, s) {
   el.setAttribute('transform', `translate(${cx} ${cy}) scale(${s.toFixed(4)}) translate(${-cx} ${-cy})`);
 }
+function setWaveR(grad, r) { grad.setAttribute('r', r.toFixed(1)); }
 
-// Standard QRS+T ECG shape (t in ms from QRS onset)
 function ecgQrsT(t, wide = false) {
   if (wide) {
     if (t < 30)  return -0.10 * Math.sin(Math.PI * t / 30);
@@ -430,23 +704,25 @@ function ecgQrsT(t, wide = false) {
     return 0;
   }
   if (t < 20)  return -0.12 * Math.sin(Math.PI * t / 20);
-  if (t < 60)  return 1.25 * Math.sin(Math.PI * (t - 20) / 40);
+  if (t < 60)  return 1.30 * Math.sin(Math.PI * (t - 20) / 40);
   if (t < 80)  return -0.28 * Math.sin(Math.PI * (t - 60) / 20);
   if (t < 200) return 0;
-  if (t < 380) return 0.32 * Math.sin(Math.PI * (t - 200) / 180);
+  if (t < 380) return 0.34 * Math.sin(Math.PI * (t - 200) / 180);
   return 0;
 }
 
-// ============================================================
-// HEART ELEMENT REFS
-// ============================================================
 const els = {
-  sa: $('sa-node'), av: $('av-node'), his: $('his'), rbb: $('rbb'), lbb: $('lbb'),
-  purkinje: $('purkinje'),
+  sa: $('sa-node'), av: $('av-node'),
+  saRipple: $('sa-ripple'), avRipple: $('av-ripple'),
+  his: $('his'), rbb: $('rbb'), lbb: $('lbb'), purkinje: $('purkinje'),
   raAct: $('ra-act'), laAct: $('la-act'), rvAct: $('rv-act'), lvAct: $('lv-act'),
   rvRep: $('rv-rep'), lvRep: $('lv-rep'),
-  hisPulse: $('his-pulse'), rbbPulse: $('rbb-pulse'), lbbPulse: $('lbb-pulse'),
-  atriaWave: $('atria-wave'),
+  waveRa: $('wave-ra'), waveLa: $('wave-la'), waveRv: $('wave-rv'), waveLv: $('wave-lv'),
+  repRv: $('rep-rv'), repLv: $('rep-lv'),
+  aw: ['aw-t3','aw-t2','aw-t1','aw-core'].map($),
+  hp: ['hp-t2','hp-t1','hp-core'].map($),
+  rp: ['rp-t3','rp-t2','rp-t1','rp-core'].map($),
+  lp: ['lp-t3','lp-t2','lp-t1','lp-core'].map($),
   raGrp: $('ra-group'), laGrp: $('la-group'), rvGrp: $('rv-group'), lvGrp: $('lv-group'),
   heartGrp: $('heart-group'),
   afibFoci: document.querySelectorAll('.afib-focus'),
@@ -455,153 +731,207 @@ const els = {
   avbBlock: $('avb-block'),
 };
 
+const TRAIL_PARAMS = {
+  aw: { delays: [90, 60, 30, 0], sizes: [3, 4, 5, 7], opacs: [0.25, 0.45, 0.7, 1.0] },
+  hp: { delays: [50, 25, 0], sizes: [3, 4, 6], opacs: [0.4, 0.7, 1.0] },
+  rp: { delays: [80, 50, 25, 0], sizes: [3, 4, 5, 6.5], opacs: [0.3, 0.5, 0.75, 1.0] },
+  lp: { delays: [80, 50, 25, 0], sizes: [3, 4, 5, 6.5], opacs: [0.3, 0.5, 0.75, 1.0] },
+};
+function animateImpulse(key, t, startT, duration, pathFn) {
+  const arr = els[key], p = TRAIL_PARAMS[key];
+  for (let i = 0; i < arr.length; i++) {
+    const tt = t - startT - p.delays[i];
+    if (tt < 0 || tt > duration) { arr[i].setAttribute('opacity', 0); continue; }
+    const u = tt / duration;
+    const pos = pathFn(u);
+    arr[i].setAttribute('cx', pos.x.toFixed(1));
+    arr[i].setAttribute('cy', pos.y.toFixed(1));
+    arr[i].setAttribute('r', p.sizes[i]);
+    arr[i].setAttribute('opacity', (p.opacs[i] * Math.sin(Math.PI * u)).toFixed(3));
+  }
+}
+function hideImpulse(key) { els[key].forEach(c => c.setAttribute('opacity', 0)); }
+
+const pathSAtoAV = u => {
+  const ax = 295, ay = 245;
+  return { x: lerp(lerp(258, ax, u), lerp(ax, 345, u), u), y: lerp(lerp(215, ay, u), lerp(ay, 322, u), u) };
+};
+const pathHis = u => ({ x: 345, y: lerp(322, 372, u) });
+function bezier3(p0, c1, c2, end, u) {
+  const a = { x: lerp(p0.x, c1.x, u), y: lerp(p0.y, c1.y, u) };
+  const b = { x: lerp(c1.x, c2.x, u), y: lerp(c1.y, c2.y, u) };
+  const c = { x: lerp(c2.x, end.x, u), y: lerp(c2.y, end.y, u) };
+  const ab = { x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u) };
+  const bc = { x: lerp(b.x, c.x, u), y: lerp(b.y, c.y, u) };
+  return { x: lerp(ab.x, bc.x, u), y: lerp(ab.y, bc.y, u) };
+}
+const pathRBB = u => bezier3({x:345,y:372}, {x:300,y:412}, {x:268,y:470}, {x:220,y:528}, u);
+const pathLBB = u => bezier3({x:345,y:372}, {x:395,y:408}, {x:430,y:470}, {x:478,y:552}, u);
+
+function animateRipple(el, t, startT, duration, x, y, maxR, color) {
+  if (t < startT || t > startT + duration) { el.setAttribute('opacity', 0); return; }
+  const u = (t - startT) / duration;
+  el.setAttribute('cx', x); el.setAttribute('cy', y);
+  el.setAttribute('r', (u * maxR).toFixed(1));
+  el.setAttribute('opacity', ((1 - u) * 0.85).toFixed(3));
+  el.setAttribute('stroke', color);
+  el.setAttribute('stroke-width', (2.5 + (1 - u) * 1.5).toFixed(2));
+}
+
 function resetVisuals() {
   ['raAct','laAct','rvAct','lvAct','rvRep','lvRep'].forEach(k => els[k].setAttribute('opacity', 0));
-  applyScale(els.raGrp, 250, 250, 1); applyScale(els.laGrp, 420, 250, 1);
-  applyScale(els.rvGrp, 210, 430, 1); applyScale(els.lvGrp, 455, 470, 1);
-  applyScale(els.heartGrp, 350, 380, 1);
-  els.sa.setAttribute('fill', '#3a2a00'); els.sa.setAttribute('r', 6); els.sa.removeAttribute('filter');
-  els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5);
+  setWaveR(els.waveRa, 0); setWaveR(els.waveLa, 0);
+  setWaveR(els.waveRv, 0); setWaveR(els.waveLv, 0);
+  setWaveR(els.repRv, 0); setWaveR(els.repLv, 0);
+  applyScale(els.raGrp, 250, 252, 1); applyScale(els.laGrp, 420, 252, 1);
+  applyScale(els.rvGrp, 215, 435, 1); applyScale(els.lvGrp, 460, 475, 1);
+  applyScale(els.heartGrp, 350, 400, 1);
+  els.sa.setAttribute('fill', '#3a2a00'); els.sa.setAttribute('r', 7); els.sa.removeAttribute('filter');
+  els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 6);
   els.av.setAttribute('stroke', '#00d4ff'); els.av.removeAttribute('filter');
-  els.his.setAttribute('stroke', '#3a4660'); els.his.setAttribute('stroke-width', 3); els.his.removeAttribute('filter');
-  els.rbb.setAttribute('stroke', '#3a4660'); els.rbb.setAttribute('stroke-width', 2.5); els.rbb.removeAttribute('filter');
-  els.lbb.setAttribute('stroke', '#3a4660'); els.lbb.setAttribute('stroke-width', 2.5); els.lbb.removeAttribute('filter');
-  els.purkinje.setAttribute('stroke', '#3a4660'); els.purkinje.setAttribute('stroke-width', 1.4); els.purkinje.removeAttribute('filter');
-  els.hisPulse.setAttribute('opacity', 0); els.rbbPulse.setAttribute('opacity', 0);
-  els.lbbPulse.setAttribute('opacity', 0); els.atriaWave.setAttribute('opacity', 0);
+  els.saRipple.setAttribute('opacity', 0); els.avRipple.setAttribute('opacity', 0);
+  els.his.setAttribute('stroke', '#4a5a78'); els.his.setAttribute('stroke-width', 3.5); els.his.removeAttribute('filter');
+  els.rbb.setAttribute('stroke', '#4a5a78'); els.rbb.setAttribute('stroke-width', 2.8); els.rbb.removeAttribute('filter');
+  els.lbb.setAttribute('stroke', '#4a5a78'); els.lbb.setAttribute('stroke-width', 2.8); els.lbb.removeAttribute('filter');
+  els.purkinje.setAttribute('stroke', '#4a5a78'); els.purkinje.setAttribute('stroke-width', 1.5); els.purkinje.removeAttribute('filter');
+  hideImpulse('aw'); hideImpulse('hp'); hideImpulse('rp'); hideImpulse('lp');
   els.afibFoci.forEach(f => f.setAttribute('opacity', 0));
   els.aflutterDot.setAttribute('opacity', 0); els.ectopicFocus.setAttribute('opacity', 0);
   els.avbBlock.setAttribute('opacity', 0);
 }
 
-// Reusable ventricular contraction + activation + repolarization animation
 function applyVentricularQRST(t, wide = false) {
   const qDur = wide ? 140 : 80, stDur = wide ? 140 : 120, tDur = wide ? 200 : 180;
   const stEnd = qDur + stDur, tEnd = stEnd + tDur;
-  let vC = 0, vA = 0, tG = 0;
+  let vC = 0;
   if (t < qDur)        vC = easeIO(t / qDur) * 0.09;
   else if (t < stEnd)  vC = 0.09;
   else if (t < tEnd)   vC = (1 - easeIO((t - stEnd) / tDur)) * 0.09;
-  if (t < qDur + 30)   vA = Math.sin(Math.PI * t / (qDur + 30));
-  if (t >= stEnd && t < tEnd) tG = Math.sin(Math.PI * (t - stEnd) / tDur);
-  applyScale(els.rvGrp, 210, 430, 1 - vC);
-  applyScale(els.lvGrp, 455, 470, 1 - vC);
-  els.rvAct.setAttribute('opacity', (vA * 0.65).toFixed(3));
-  els.lvAct.setAttribute('opacity', (vA * 0.65).toFixed(3));
-  els.rvRep.setAttribute('opacity', (tG * 0.5).toFixed(3));
-  els.lvRep.setAttribute('opacity', (tG * 0.5).toFixed(3));
+  applyScale(els.rvGrp, 215, 435, 1 - vC);
+  applyScale(els.lvGrp, 460, 475, 1 - vC);
+
+  if (t >= 0 && t < qDur + 60) {
+    const u = clamp01(t / (qDur + 40));
+    setWaveR(els.waveRv, u * 380);
+    setWaveR(els.waveLv, u * 440);
+    els.rvAct.setAttribute('opacity', Math.sin(Math.PI * u).toFixed(3));
+    els.lvAct.setAttribute('opacity', Math.sin(Math.PI * u).toFixed(3));
+  } else {
+    els.rvAct.setAttribute('opacity', 0); els.lvAct.setAttribute('opacity', 0);
+    if (t >= stEnd) { setWaveR(els.waveRv, 0); setWaveR(els.waveLv, 0); }
+  }
+
+  if (t >= stEnd && t < tEnd) {
+    const u = (t - stEnd) / tDur;
+    setWaveR(els.repRv, clamp01(u * 1.2) * 380);
+    setWaveR(els.repLv, clamp01(u * 1.2) * 440);
+    els.rvRep.setAttribute('opacity', Math.sin(Math.PI * u).toFixed(3));
+    els.lvRep.setAttribute('opacity', Math.sin(Math.PI * u).toFixed(3));
+  } else {
+    els.rvRep.setAttribute('opacity', 0); els.lvRep.setAttribute('opacity', 0);
+    if (t < stEnd || t > tEnd + 50) { setWaveR(els.repRv, 0); setWaveR(els.repLv, 0); }
+  }
   return tEnd;
 }
 function applyVentricularRest() {
-  applyScale(els.rvGrp, 210, 430, 1);
-  applyScale(els.lvGrp, 455, 470, 1);
+  applyScale(els.rvGrp, 215, 435, 1); applyScale(els.lvGrp, 460, 475, 1);
   els.rvAct.setAttribute('opacity', 0); els.lvAct.setAttribute('opacity', 0);
   els.rvRep.setAttribute('opacity', 0); els.lvRep.setAttribute('opacity', 0);
+  setWaveR(els.waveRv, 0); setWaveR(els.waveLv, 0);
+  setWaveR(els.repRv, 0); setWaveR(els.repLv, 0);
 }
 
-// ============================================================
-// NORMAL SINUS RHYTHM
-// ============================================================
 const NSR_PHASES = [
-  { id:'P',   name:'P wave',     range:[0,120],   accent:'#ffd700', desc:'Atrial depolarization. The SA node fires; the wave spreads across both atria via internodal tracts and Bachmann’s bundle, causing atrial contraction.', structure:'SA node → right atrium → left atrium' },
-  { id:'PR',  name:'PR segment', range:[120,200], accent:'#00d4ff', desc:'AV nodal delay. Conduction slows here for ~80 ms so the ventricles can finish filling. The impulse then enters the Bundle of His.', structure:'AV node → Bundle of His' },
-  { id:'QRS', name:'QRS complex',range:[200,280], accent:'#ff4500', desc:'Ventricular depolarization. Rapid conduction down both bundle branches and the Purkinje network triggers synchronized ventricular systole.', structure:'Bundle branches → Purkinje fibers → ventricular myocardium' },
-  { id:'ST',  name:'ST segment', range:[280,400], accent:'#ffb84d', desc:'Plateau. Ventricles are fully depolarized and contracting; blood ejects through the aorta and pulmonary artery.', structure:'Ventricles — sustained contraction' },
-  { id:'T',   name:'T wave',     range:[400,600], accent:'#51cf66', desc:'Ventricular repolarization. Cells reset their electrical state and the ventricles relax (early diastole).', structure:'Ventricular myocardium — repolarization' },
-  { id:'TP',  name:'TP segment', range:[600,1500],accent:'#6b7a99', desc:'Electrical diastole. The heart rests between beats while the atria passively fill.', structure:'Resting — passive ventricular filling' },
+  { id:'P',   name:'P wave',      range:[0,120],   accent:'#ffd700', desc:'Atrial depolarization. The SA node fires; the wave spreads across both atria via internodal tracts and Bachmann’s bundle, causing atrial contraction.', structure:'SA node → right atrium → left atrium' },
+  { id:'PR',  name:'PR segment',  range:[120,200], accent:'#00d4ff', desc:'AV nodal delay. Conduction slows here for ~80 ms so the ventricles can finish filling. The impulse then enters the Bundle of His.', structure:'AV node → Bundle of His' },
+  { id:'QRS', name:'QRS complex', range:[200,280], accent:'#ff4500', desc:'Ventricular depolarization. Rapid conduction down both bundle branches and the Purkinje network triggers synchronized ventricular systole.', structure:'Bundle branches → Purkinje fibers → ventricular myocardium' },
+  { id:'ST',  name:'ST segment',  range:[280,400], accent:'#ffb84d', desc:'Plateau. Ventricles are fully depolarized and contracting; blood ejects through the aorta and pulmonary artery.', structure:'Ventricles — sustained contraction' },
+  { id:'T',   name:'T wave',      range:[400,600], accent:'#51cf66', desc:'Ventricular repolarization. Cells reset their electrical state and the ventricles relax (early diastole).', structure:'Ventricular myocardium — repolarization' },
+  { id:'TP',  name:'TP segment',  range:[600,1500],accent:'#6b7a99', desc:'Electrical diastole. The heart rests between beats while the atria passively fill.', structure:'Resting — passive ventricular filling' },
 ];
 const NSR_CYCLE = 1500;
 
 function ecgNSR(t) {
-  if (t < 120) return 0.18 * Math.sin(Math.PI * t / 120);
+  if (t < 120) return 0.20 * Math.sin(Math.PI * t / 120);
   if (t < 200) return 0;
   if (t < 380) return ecgQrsT(t - 200);
   return 0;
 }
+
 function heartNSR(t) {
-  // SA node
   let saG = 0;
-  if (t < 120) saG = Math.sin(Math.PI * t / 120);
-  else if (t < 180) saG = (180 - t) / 60 * 0.3;
+  if (t < 130) saG = Math.sin(Math.PI * t / 130);
+  else if (t < 180) saG = (180 - t) / 50 * 0.3;
   els.sa.setAttribute('fill', saG > 0.05 ? '#ffd700' : '#3a2a00');
-  els.sa.setAttribute('r', 6 + saG * 4);
+  els.sa.setAttribute('r', 6 + saG * 5);
   els.sa.setAttribute('filter', saG > 0.1 ? 'url(#sglow)' : '');
-  // Atrial wave
-  if (t < 200) {
-    const u = clamp01(t / 180);
-    els.atriaWave.setAttribute('cx', lerp(258, 345, u));
-    els.atriaWave.setAttribute('cy', lerp(215, 320, u));
-    els.atriaWave.setAttribute('r', 10 - u * 4);
-    els.atriaWave.setAttribute('opacity', Math.sin(Math.PI * u) * 0.9);
-  } else els.atriaWave.setAttribute('opacity', 0);
-  // Atrial overlays
-  let raA = 0, laA = 0;
-  if (t < 160) { raA = Math.sin(Math.PI * clamp01(t / 140)); laA = (t>25) ? Math.sin(Math.PI * clamp01((t-25)/135)) : 0; }
-  els.raAct.setAttribute('opacity', raA * 0.55);
-  els.laAct.setAttribute('opacity', laA * 0.55);
-  // Atrial contraction
+  animateRipple(els.saRipple, t, 0, 280, 258, 215, 38, '#ffd700');
+
+  if (t < 180) {
+    const u = clamp01(t / 130);
+    setWaveR(els.waveRa, u * 240);
+    setWaveR(els.waveLa, clamp01((t - 20) / 130) * 280);
+    els.raAct.setAttribute('opacity', Math.sin(Math.PI * clamp01(t/180)).toFixed(3));
+    els.laAct.setAttribute('opacity', Math.sin(Math.PI * clamp01((t - 20)/180)).toFixed(3));
+  } else {
+    els.raAct.setAttribute('opacity', 0); els.laAct.setAttribute('opacity', 0);
+    setWaveR(els.waveRa, 0); setWaveR(els.waveLa, 0);
+  }
+
+  animateImpulse('aw', t, 0, 200, pathSAtoAV);
+
   let ac = 0;
   if (t < 220) ac = Math.sin(Math.PI * (t / 220)) * 0.07;
-  applyScale(els.raGrp, 250, 250, 1 - ac);
-  applyScale(els.laGrp, 420, 250, 1 - ac);
-  // AV node
+  applyScale(els.raGrp, 250, 252, 1 - ac);
+  applyScale(els.laGrp, 420, 252, 1 - ac);
+
   let avG = 0;
-  if (t >= 100 && t < 220) avG = Math.sin(Math.PI * (t - 100) / 120);
+  if (t >= 110 && t < 230) avG = Math.sin(Math.PI * (t - 110) / 120);
   els.av.setAttribute('fill', avG > 0.05 ? '#00d4ff' : '#003040');
-  els.av.setAttribute('r', 5 + avG * 3);
+  els.av.setAttribute('r', 5 + avG * 4);
   els.av.setAttribute('filter', avG > 0.1 ? 'url(#sglow)' : '');
-  // Bundle of His
+  animateRipple(els.avRipple, t, 130, 200, 345, 322, 32, '#00d4ff');
+
   let hG = 0;
-  if (t >= 160 && t < 240) hG = clamp01((t-160)/40) * clamp01((240-t)/30);
-  els.his.setAttribute('stroke', hG > 0.1 ? '#00d4ff' : '#3a4660');
-  els.his.setAttribute('stroke-width', 3 + hG * 2);
+  if (t >= 170 && t < 240) hG = clamp01((t-170)/35) * clamp01((240-t)/30);
+  els.his.setAttribute('stroke', hG > 0.1 ? '#00d4ff' : '#4a5a78');
+  els.his.setAttribute('stroke-width', 3.5 + hG * 2);
   els.his.setAttribute('filter', hG > 0.2 ? 'url(#glow)' : '');
-  if (t >= 180 && t < 230) {
-    const u = (t-180)/50;
-    els.hisPulse.setAttribute('cy', lerp(325, 370, u));
-    els.hisPulse.setAttribute('cx', 345);
-    els.hisPulse.setAttribute('r', 5);
-    els.hisPulse.setAttribute('opacity', Math.sin(Math.PI * u));
-  } else els.hisPulse.setAttribute('opacity', 0);
-  // Bundle branches + Purkinje
+  animateImpulse('hp', t, 175, 50, pathHis);
+
   let bG = 0;
-  if (t >= 200 && t < 310) bG = clamp01((t-200)/25) * clamp01((310-t)/55);
-  const bC = bG > 0.1 ? '#ff4500' : '#3a4660';
+  if (t >= 200 && t < 320) bG = clamp01((t-200)/25) * clamp01((320-t)/60);
+  const bC = bG > 0.1 ? '#ff4500' : '#4a5a78';
   els.rbb.setAttribute('stroke', bC); els.lbb.setAttribute('stroke', bC);
-  els.rbb.setAttribute('stroke-width', 2.5+bG*2); els.lbb.setAttribute('stroke-width', 2.5+bG*2);
-  els.rbb.setAttribute('filter', bG > 0.2 ? 'url(#glow)' : ''); els.lbb.setAttribute('filter', bG > 0.2 ? 'url(#glow)' : '');
-  els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff6a2a' : '#3a4660');
-  els.purkinje.setAttribute('stroke-width', 1.4 + bG * 1.6);
+  els.rbb.setAttribute('stroke-width', 2.8 + bG * 2);
+  els.lbb.setAttribute('stroke-width', 2.8 + bG * 2);
+  els.rbb.setAttribute('filter', bG > 0.2 ? 'url(#glow)' : '');
+  els.lbb.setAttribute('filter', bG > 0.2 ? 'url(#glow)' : '');
+  els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff7030' : '#4a5a78');
+  els.purkinje.setAttribute('stroke-width', 1.5 + bG * 1.6);
   els.purkinje.setAttribute('filter', bG > 0.25 ? 'url(#glow)' : '');
-  if (t >= 215 && t < 295) {
-    const u = (t-215)/80;
-    els.rbbPulse.setAttribute('cx', lerp(345, 215, u)); els.rbbPulse.setAttribute('cy', lerp(370, 530, u));
-    els.rbbPulse.setAttribute('r', 5); els.rbbPulse.setAttribute('opacity', Math.sin(Math.PI*u)*0.95);
-    els.lbbPulse.setAttribute('cx', lerp(345, 478, u)); els.lbbPulse.setAttribute('cy', lerp(370, 555, u));
-    els.lbbPulse.setAttribute('r', 5); els.lbbPulse.setAttribute('opacity', Math.sin(Math.PI*u)*0.95);
-  } else { els.rbbPulse.setAttribute('opacity', 0); els.lbbPulse.setAttribute('opacity', 0); }
-  // Ventricles
+
+  animateImpulse('rp', t, 210, 90, pathRBB);
+  animateImpulse('lp', t, 210, 90, pathLBB);
+
   applyVentricularQRST(Math.max(0, t - 200));
-  // Late diastolic filling expansion (very subtle)
-  if (t >= 600 && t < 1500) {
-    const expand = -0.018 * Math.sin(Math.PI * (t - 600) / 900);
-    applyScale(els.rvGrp, 210, 430, 1 - expand);
-    applyScale(els.lvGrp, 455, 470, 1 - expand);
+
+  if (t >= 620 && t < 1500) {
+    const expand = -0.018 * Math.sin(Math.PI * (t - 620) / 880);
+    applyScale(els.rvGrp, 215, 435, 1 - expand);
+    applyScale(els.lvGrp, 460, 475, 1 - expand);
   }
-  // Heart systolic pulse
+
   let hs = 1;
-  if (t >= 200 && t < 600) {
-    if (t < 280) hs = 1 + easeIO((t-200)/80) * 0.025;
-    else if (t < 400) hs = 1.025;
-    else hs = 1 + (1 - easeIO((t-400)/200)) * 0.025;
+  if (t >= 200 && t < 620) {
+    if (t < 280) hs = 1 + easeIO((t-200)/80) * 0.026;
+    else if (t < 420) hs = 1.026;
+    else hs = 1 + (1 - easeIO((t-420)/200)) * 0.026;
   }
-  applyScale(els.heartGrp, 350, 380, hs);
+  applyScale(els.heartGrp, 350, 400, hs);
 }
 
-// ============================================================
-// ARRHYTHMIAS
-// ============================================================
-const ST = { // per-rhythm state
+const ST = {
   afib: { nextQRS: 0, qrs: null, beats: [] },
   aflutter: { beats: [] },
   avb3: { beats: [] },
@@ -613,90 +943,90 @@ function rateBpm(arr) {
   return Math.round(60000 * (arr.length - 1) / (arr[arr.length-1] - arr[0]));
 }
 
-// ---------- ATRIAL FIBRILLATION ----------
 function tickAFib(gt) {
   const s = ST.afib;
   if (!s.qrs && gt >= s.nextQRS) {
     s.qrs = { start: gt };
-    s.nextQRS = gt + 380 + 300 + Math.random() * 520; // 680-1200 ms RR
+    s.nextQRS = gt + 380 + 300 + Math.random() * 520;
     addBeat(s.beats, gt);
   }
-  if (s.qrs && gt - s.qrs.start > 400) s.qrs = null;
+  if (s.qrs && gt - s.qrs.start > 460) s.qrs = null;
 
-  // Chaotic atrial foci flicker
   els.afibFoci.forEach((f, i) => {
     const phase = gt * (0.025 + i * 0.011) + i * 1.7;
     const n = Math.sin(phase) * Math.sin(phase * 0.7 + 1.3);
     const a = n > 0.4 ? (n - 0.4) / 0.6 : 0;
-    f.setAttribute('r', a * 7); f.setAttribute('opacity', a * 0.9);
+    f.setAttribute('r', (a * 8).toFixed(2));
+    f.setAttribute('opacity', (a * 0.95).toFixed(3));
   });
-  // Atrial overlay - low irregular fill
-  els.raAct.setAttribute('opacity', 0.12 + 0.10 * Math.abs(Math.sin(gt * 0.05)));
-  els.laAct.setAttribute('opacity', 0.12 + 0.10 * Math.abs(Math.sin(gt * 0.07 + 1)));
-  // Atria quiver (no real contraction)
+  setWaveR(els.waveRa, 260); setWaveR(els.waveLa, 280);
+  els.raAct.setAttribute('opacity', (0.20 + 0.18 * Math.abs(Math.sin(gt * 0.04))).toFixed(3));
+  els.laAct.setAttribute('opacity', (0.20 + 0.18 * Math.abs(Math.sin(gt * 0.06 + 1))).toFixed(3));
   const aq = 1 - 0.008 * Math.abs(Math.sin(gt * 0.13));
-  applyScale(els.raGrp, 250, 250, aq); applyScale(els.laGrp, 420, 250, aq);
-  // SA node dim
+  applyScale(els.raGrp, 250, 252, aq); applyScale(els.laGrp, 420, 252, aq);
   els.sa.setAttribute('fill', '#3a2a00'); els.sa.setAttribute('r', 6); els.sa.removeAttribute('filter');
-  els.atriaWave.setAttribute('opacity', 0);
+  els.saRipple.setAttribute('opacity', 0);
+  hideImpulse('aw');
 
-  // QRS+T sequence
   if (s.qrs) {
     const t = gt - s.qrs.start;
-    // AV node lights briefly when impulse breaks through
-    if (t < 40) { els.av.setAttribute('fill', '#00d4ff'); els.av.setAttribute('r', 5 + (40-t)/10); els.av.setAttribute('filter', 'url(#sglow)'); }
-    else { els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter'); }
-    // Bundles light during initial QRS
+    if (t < 50) { els.av.setAttribute('fill', '#00d4ff'); els.av.setAttribute('r', 5 + (50-t)/12); els.av.setAttribute('filter', 'url(#sglow)'); animateRipple(els.avRipple, t, 0, 110, 345, 322, 28, '#00d4ff'); }
+    else { els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter'); els.avRipple.setAttribute('opacity', 0); }
     const bG = t < 80 ? Math.sin(Math.PI * t / 80) : 0;
-    const bC = bG > 0.1 ? '#ff4500' : '#3a4660';
+    const bC = bG > 0.1 ? '#ff4500' : '#4a5a78';
     els.rbb.setAttribute('stroke', bC); els.lbb.setAttribute('stroke', bC);
-    els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff6a2a' : '#3a4660');
+    els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff7030' : '#4a5a78');
+    animateImpulse('rp', gt, s.qrs.start, 90, pathRBB);
+    animateImpulse('lp', gt, s.qrs.start, 90, pathLBB);
+    animateImpulse('hp', gt, s.qrs.start - 10, 50, pathHis);
     applyVentricularQRST(t);
   } else {
     els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter');
-    els.rbb.setAttribute('stroke', '#3a4660'); els.lbb.setAttribute('stroke', '#3a4660');
-    els.purkinje.setAttribute('stroke', '#3a4660');
+    els.avRipple.setAttribute('opacity', 0);
+    els.rbb.setAttribute('stroke', '#4a5a78'); els.lbb.setAttribute('stroke', '#4a5a78');
+    els.purkinje.setAttribute('stroke', '#4a5a78');
+    hideImpulse('rp'); hideImpulse('lp'); hideImpulse('hp');
     applyVentricularRest();
   }
-  applyScale(els.heartGrp, 350, 380, 1);
+  applyScale(els.heartGrp, 350, 400, 1);
 
-  // ECG
   let v = 0.05 * Math.sin(gt * 0.07) + 0.035 * Math.sin(gt * 0.11 + 1.3) + 0.028 * Math.sin(gt * 0.19 + 2.1) + 0.022 * Math.sin(gt * 0.31 + 0.7);
   if (s.qrs) v += ecgQrsT(gt - s.qrs.start);
   return v;
 }
 
-// ---------- ATRIAL FLUTTER (2:1 conduction) ----------
 function tickAFlutter(gt) {
   const s = ST.aflutter;
-  const aP = 200, vP = 400; // atrial 300/min, vent 150/min
-  // Re-entry dot rotating in right atrium
+  const aP = 200, vP = 400;
   const ang = (gt % aP) / aP * Math.PI * 2;
-  els.aflutterDot.setAttribute('cx', 240 + 32 * Math.cos(ang));
-  els.aflutterDot.setAttribute('cy', 255 + 32 * Math.sin(ang));
-  els.aflutterDot.setAttribute('r', 6); els.aflutterDot.setAttribute('opacity', 0.85);
-  // Atria pulse with each flutter cycle
+  els.aflutterDot.setAttribute('cx', (240 + 32 * Math.cos(ang)).toFixed(1));
+  els.aflutterDot.setAttribute('cy', (255 + 32 * Math.sin(ang)).toFixed(1));
+  els.aflutterDot.setAttribute('r', 7); els.aflutterDot.setAttribute('opacity', 0.9);
+
   const at = gt % aP, atU = at / aP;
   const aq = 1 - 0.02 * Math.sin(Math.PI * atU);
-  applyScale(els.raGrp, 250, 250, aq); applyScale(els.laGrp, 420, 250, aq);
-  els.raAct.setAttribute('opacity', Math.sin(Math.PI * atU) * 0.4);
-  els.laAct.setAttribute('opacity', Math.sin(Math.PI * atU) * 0.4);
-  // SA dim
+  applyScale(els.raGrp, 250, 252, aq); applyScale(els.laGrp, 420, 252, aq);
+  setWaveR(els.waveRa, 240); setWaveR(els.waveLa, 280);
+  els.raAct.setAttribute('opacity', (Math.sin(Math.PI * atU) * 0.5).toFixed(3));
+  els.laAct.setAttribute('opacity', (Math.sin(Math.PI * atU) * 0.5).toFixed(3));
   els.sa.setAttribute('fill', '#3a2a00'); els.sa.setAttribute('r', 6); els.sa.removeAttribute('filter');
-  els.atriaWave.setAttribute('opacity', 0);
+  els.saRipple.setAttribute('opacity', 0); hideImpulse('aw');
   els.afibFoci.forEach(f => f.setAttribute('opacity', 0));
-  // QRS every vP (2:1)
+
   const qt = gt % vP;
-  if (qt < 30) { els.av.setAttribute('fill', '#00d4ff'); els.av.setAttribute('r', 8); els.av.setAttribute('filter', 'url(#sglow)'); if (qt < 5) addBeat(s.beats, gt); }
-  else { els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter'); }
+  if (qt < 5) addBeat(s.beats, gt);
+  if (qt < 60) { els.av.setAttribute('fill', '#00d4ff'); els.av.setAttribute('r', 8 - qt/10); els.av.setAttribute('filter', 'url(#sglow)'); animateRipple(els.avRipple, qt, 0, 100, 345, 322, 26, '#00d4ff'); }
+  else { els.av.setAttribute('fill', '#003040'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter'); els.avRipple.setAttribute('opacity', 0); }
   if (qt < 400) {
     const bG = qt < 80 ? Math.sin(Math.PI * qt / 80) : 0;
-    els.rbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
-    els.lbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
+    const bC = bG > 0.1 ? '#ff4500' : '#4a5a78';
+    els.rbb.setAttribute('stroke', bC); els.lbb.setAttribute('stroke', bC);
+    animateImpulse('rp', gt, gt - qt, 90, pathRBB);
+    animateImpulse('lp', gt, gt - qt, 90, pathLBB);
     applyVentricularQRST(qt);
-  } else applyVentricularRest();
-  applyScale(els.heartGrp, 350, 380, 1);
-  // ECG
+  } else { applyVentricularRest(); hideImpulse('rp'); hideImpulse('lp'); }
+  applyScale(els.heartGrp, 350, 400, 1);
+
   let v;
   if (at < 170) v = -0.04 - 0.0008 * at;
   else v = -0.176 + 0.0072 * (at - 170);
@@ -705,146 +1035,141 @@ function tickAFlutter(gt) {
   return v;
 }
 
-// ---------- 3° AV BLOCK ----------
 function tickAVB3(gt) {
   const s = ST.avb3;
-  const aP = 850; // atrial 70/min
-  const vP = 1700; // ventricular escape 35/min
+  const aP = 850, vP = 1700;
   const pt = gt % aP;
-  // SA + atrial activation
-  if (pt < 120) {
-    const u = pt / 120;
-    els.sa.setAttribute('fill', '#ffd700'); els.sa.setAttribute('r', 6 + Math.sin(Math.PI*u)*4); els.sa.setAttribute('filter', 'url(#sglow)');
-    els.raAct.setAttribute('opacity', Math.sin(Math.PI * u) * 0.55);
-    els.laAct.setAttribute('opacity', (pt > 20 ? Math.sin(Math.PI * clamp01((pt-20)/110)) : 0) * 0.55);
+
+  if (pt < 130) {
+    const u = pt / 130;
+    els.sa.setAttribute('fill', '#ffd700'); els.sa.setAttribute('r', 6 + Math.sin(Math.PI*u)*5); els.sa.setAttribute('filter', 'url(#sglow)');
+    animateRipple(els.saRipple, pt, 0, 220, 258, 215, 36, '#ffd700');
+    setWaveR(els.waveRa, u * 240);
+    setWaveR(els.waveLa, clamp01((pt - 20) / 130) * 280);
+    els.raAct.setAttribute('opacity', (Math.sin(Math.PI * u) * 0.85).toFixed(3));
+    els.laAct.setAttribute('opacity', ((pt > 20 ? Math.sin(Math.PI * clamp01((pt-20)/130)) : 0) * 0.85).toFixed(3));
     const aq = 1 - Math.sin(Math.PI * u) * 0.06;
-    applyScale(els.raGrp, 250, 250, aq); applyScale(els.laGrp, 420, 250, aq);
-    if (pt < 130) {
-      els.atriaWave.setAttribute('cx', lerp(258, 345, u));
-      els.atriaWave.setAttribute('cy', lerp(215, 320, u));
-      els.atriaWave.setAttribute('r', 8); els.atriaWave.setAttribute('opacity', Math.sin(Math.PI*u)*0.85);
-    }
+    applyScale(els.raGrp, 250, 252, aq); applyScale(els.laGrp, 420, 252, aq);
+    animateImpulse('aw', gt, gt - pt, 160, pathSAtoAV);
   } else {
     els.sa.setAttribute('fill', '#3a2a00'); els.sa.removeAttribute('filter'); els.sa.setAttribute('r', 6);
+    els.saRipple.setAttribute('opacity', 0);
+    setWaveR(els.waveRa, 0); setWaveR(els.waveLa, 0);
     els.raAct.setAttribute('opacity', 0); els.laAct.setAttribute('opacity', 0);
-    applyScale(els.raGrp, 250, 250, 1); applyScale(els.laGrp, 420, 250, 1);
-    els.atriaWave.setAttribute('opacity', 0);
+    applyScale(els.raGrp, 250, 252, 1); applyScale(els.laGrp, 420, 252, 1);
+    hideImpulse('aw');
   }
-  // AV node = BLOCKED. Show red X mark when impulse arrives
-  if (pt > 100 && pt < 280) {
-    els.avbBlock.setAttribute('opacity', Math.sin(Math.PI * (pt - 100) / 180) * 0.95);
+  if (pt > 130 && pt < 320) {
+    els.avbBlock.setAttribute('opacity', (Math.sin(Math.PI * (pt - 130) / 190) * 0.95).toFixed(3));
   } else els.avbBlock.setAttribute('opacity', 0);
-  els.av.setAttribute('fill', '#3a0808'); els.av.setAttribute('stroke', '#ff5555'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter');
-  // Ventricular escape from ectopic focus
+  els.av.setAttribute('fill', '#3a0808'); els.av.setAttribute('stroke', '#ff5050'); els.av.setAttribute('r', 6); els.av.removeAttribute('filter');
+  els.avRipple.setAttribute('opacity', 0);
+
   const qt = gt % vP;
   if (qt < 5) addBeat(s.beats, gt);
   els.ectopicFocus.setAttribute('cx', 300); els.ectopicFocus.setAttribute('cy', 470);
-  if (qt < 100) {
-    els.ectopicFocus.setAttribute('r', 9 - qt/12); els.ectopicFocus.setAttribute('opacity', Math.max(0, 1 - qt/100));
+  if (qt < 110) {
+    els.ectopicFocus.setAttribute('r', (10 - qt/12).toFixed(1));
+    els.ectopicFocus.setAttribute('opacity', Math.max(0, 1 - qt/110).toFixed(3));
   } else els.ectopicFocus.setAttribute('opacity', 0);
-  if (qt < 460) {
-    const bG = qt < 120 ? Math.sin(Math.PI * qt / 120) * 0.6 : 0;
-    els.rbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
-    els.lbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
+  if (qt < 470) {
+    const bG = qt < 130 ? Math.sin(Math.PI * qt / 130) * 0.5 : 0;
+    els.rbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#4a5a78');
+    els.lbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#4a5a78');
     applyVentricularQRST(qt, true);
-  } else applyVentricularRest();
+  } else { applyVentricularRest(); }
+  hideImpulse('hp'); hideImpulse('rp'); hideImpulse('lp');
   els.afibFoci.forEach(f => f.setAttribute('opacity', 0));
   els.aflutterDot.setAttribute('opacity', 0);
-  applyScale(els.heartGrp, 350, 380, 1);
-  // ECG
+  applyScale(els.heartGrp, 350, 400, 1);
+
   let v = 0;
-  if (pt < 110) v += 0.18 * Math.sin(Math.PI * pt / 110);
+  if (pt < 110) v += 0.22 * Math.sin(Math.PI * pt / 110);
   if (qt < 470) v += ecgQrsT(qt, true);
   return v;
 }
 
-// ---------- VENTRICULAR TACHYCARDIA ----------
 function tickVTach(gt) {
   const s = ST.vtach;
-  const P = 333; // 180 bpm
+  const P = 333;
   const t = gt % P;
   if (t < 5) addBeat(s.beats, gt);
-  // Ectopic ventricular focus
   els.ectopicFocus.setAttribute('cx', 390); els.ectopicFocus.setAttribute('cy', 495);
-  if (t < 60) {
-    els.ectopicFocus.setAttribute('r', 11 - t/8); els.ectopicFocus.setAttribute('opacity', 1 - t/80);
+  if (t < 70) {
+    els.ectopicFocus.setAttribute('r', (12 - t/9).toFixed(1));
+    els.ectopicFocus.setAttribute('opacity', (1 - t/90).toFixed(3));
   } else { els.ectopicFocus.setAttribute('r', 4); els.ectopicFocus.setAttribute('opacity', 0.35); }
-  // SA dim, atria quiet
+
   els.sa.setAttribute('fill', '#3a2a00'); els.sa.setAttribute('r', 6); els.sa.removeAttribute('filter');
+  els.saRipple.setAttribute('opacity', 0); hideImpulse('aw');
   els.raAct.setAttribute('opacity', 0); els.laAct.setAttribute('opacity', 0);
-  applyScale(els.raGrp, 250, 250, 1); applyScale(els.laGrp, 420, 250, 1);
-  els.atriaWave.setAttribute('opacity', 0);
+  setWaveR(els.waveRa, 0); setWaveR(els.waveLa, 0);
+  applyScale(els.raGrp, 250, 252, 1); applyScale(els.laGrp, 420, 252, 1);
   els.afibFoci.forEach(f => f.setAttribute('opacity', 0));
   els.aflutterDot.setAttribute('opacity', 0);
   els.avbBlock.setAttribute('opacity', 0);
-  // AV not the source
   els.av.setAttribute('fill', '#003040'); els.av.setAttribute('stroke', '#00d4ff'); els.av.setAttribute('r', 5); els.av.removeAttribute('filter');
-  // Bundles activate abnormally (retrograde or direct)
-  const bG = t < 100 ? Math.sin(Math.PI * t / 100) : 0;
-  els.rbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
-  els.lbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#3a4660');
-  els.rbb.setAttribute('stroke-width', 2.5 + bG); els.lbb.setAttribute('stroke-width', 2.5 + bG);
-  els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff6a2a' : '#3a4660');
-  // Wide QRS, fast
+  els.avRipple.setAttribute('opacity', 0);
+
+  const bG = t < 110 ? Math.sin(Math.PI * t / 110) : 0;
+  els.rbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#4a5a78');
+  els.lbb.setAttribute('stroke', bG > 0.1 ? '#ff4500' : '#4a5a78');
+  els.rbb.setAttribute('stroke-width', 2.8 + bG); els.lbb.setAttribute('stroke-width', 2.8 + bG);
+  els.purkinje.setAttribute('stroke', bG > 0.15 ? '#ff7030' : '#4a5a78');
+  hideImpulse('hp'); hideImpulse('rp'); hideImpulse('lp');
+
   applyVentricularQRST(t, true);
-  applyScale(els.heartGrp, 350, 380, 1);
-  // ECG (wide QRS, no rest)
+  applyScale(els.heartGrp, 350, 400, 1);
+
   return ecgQrsT(t, true) * 0.9;
 }
 
-// ============================================================
-// RHYTHM CATALOG
-// ============================================================
 const RHYTHMS = {
   normal: {
     name: 'Normal Sinus Rhythm', abnormal: false, accent: '#51cf66',
-    desc: 'Regular rhythm originating from the SA node, with normal AV conduction, narrow QRS, and an upright T wave. Rate 60–100 bpm in adults.',
+    desc: 'Regular rhythm originating from the SA node, with normal AV conduction, narrow QRS, and an upright T wave.',
     structure: 'SA node → atria → AV node → His-Purkinje → ventricles',
-    intervals: { PR: '200 ms', QRS: '80 ms', QT: '360 ms', RR: '1500 ms' },
-    ecgLabel: 'NSR',
+    intervals: { PR: '200 ms', QRS: '80 ms', QT: '360 ms', RR: '1500 ms' }, ecgLabel: 'NSR',
     tick: (gt) => { const t = gt % NSR_CYCLE; heartNSR(t); return ecgNSR(t); },
   },
   afib: {
     name: 'Atrial Fibrillation', abnormal: true, accent: '#ff8a4d',
-    desc: 'Chaotic, disorganized atrial electrical activity from multiple ectopic foci. The atria quiver instead of contracting. The AV node lets impulses through at random, producing an irregularly irregular ventricular response.',
+    desc: 'Chaotic, disorganized atrial activity from multiple ectopic foci. Atria quiver instead of contract; the AV node lets impulses through at random, producing an irregularly irregular ventricular response.',
     structure: 'Multiple atrial foci → AV node (variable filtering) → ventricles',
     intervals: { 'Atrial': '~400 bpm', QRS: '80 ms', 'RR var': 'Irregular', 'P waves': 'Absent' },
     intervalsHead: 'Key features', ecgLabel: 'AFib',
-    tick: (gt) => tickAFib(gt),
+    tick: tickAFib,
     stats: () => ({ rate: rateBpm(ST.afib.beats), beats: ST.afib.beats.length, last: ST.afib.beats.length ? Math.round(globalT - ST.afib.beats[ST.afib.beats.length-1]) + ' ms' : '—' }),
   },
   aflutter: {
     name: 'Atrial Flutter (2:1)', abnormal: true, accent: '#ff8a4d',
-    desc: 'A re-entrant circuit in the right atrium drives atrial depolarization at ~300/min, producing the classic sawtooth flutter waves. The AV node blocks every other impulse (2:1 conduction), giving a regular ventricular rate near 150 bpm.',
+    desc: 'A re-entrant circuit in the right atrium drives atrial depolarization at ~300/min (sawtooth flutter waves). The AV node blocks every other impulse, giving a regular ventricular rate near 150 bpm.',
     structure: 'Right-atrial re-entry circuit → AV node (2:1 block) → ventricles',
     intervals: { 'Atrial': '300 bpm', 'V. rate': '150 bpm', QRS: '80 ms', 'Ratio': '2 : 1' },
     intervalsHead: 'Key features', ecgLabel: 'AFlutter 2:1',
-    tick: (gt) => tickAFlutter(gt),
+    tick: tickAFlutter,
     stats: () => ({ rate: rateBpm(ST.aflutter.beats) || 150, beats: ST.aflutter.beats.length, last: ST.aflutter.beats.length ? Math.round(globalT - ST.aflutter.beats[ST.aflutter.beats.length-1]) + ' ms' : '—' }),
   },
   avb3: {
     name: 'Third-Degree AV Block', abnormal: true, accent: '#ff5555',
-    desc: 'Complete dissociation between atria and ventricles. The SA node fires normally and P waves march out, but NO impulses cross the AV node. A slow ventricular escape rhythm (~35 bpm) keeps the ventricles beating independently with wide QRS complexes.',
-    structure: 'SA node → atria (blocked at AV) · Ventricular escape focus drives ventricles',
+    desc: 'Complete dissociation between atria and ventricles. The SA node fires normally and P waves march out, but no impulses cross the AV node. A slow ventricular escape rhythm (~35 bpm) drives the ventricles with wide QRS complexes.',
+    structure: 'SA → atria (blocked at AV) · Ventricular escape focus drives ventricles',
     intervals: { 'Atrial': '70 bpm', 'V. rate': '35 bpm', 'PR': 'Variable', 'QRS': 'Wide (>120ms)' },
     intervalsHead: 'Key features', ecgLabel: '3° AV Block',
-    tick: (gt) => tickAVB3(gt),
+    tick: tickAVB3,
     stats: () => ({ rate: rateBpm(ST.avb3.beats) || 35, beats: ST.avb3.beats.length, last: ST.avb3.beats.length ? Math.round(globalT - ST.avb3.beats[ST.avb3.beats.length-1]) + ' ms' : '—' }),
   },
   vtach: {
     name: 'Ventricular Tachycardia', abnormal: true, accent: '#ff5555',
-    desc: 'A rapid ectopic focus (or re-entry circuit) in ventricular myocardium fires at ~180 bpm, bypassing the normal conduction system. The result is wide, monomorphic QRS complexes with no preceding P waves. A life-threatening rhythm.',
+    desc: 'A rapid ectopic focus in ventricular myocardium fires at ~180 bpm, bypassing the normal conduction system. Wide monomorphic QRS complexes with no preceding P waves — a life-threatening rhythm.',
     structure: 'Ectopic ventricular focus → ventricular myocardium (bypassing His-Purkinje)',
     intervals: { 'Rate': '180 bpm', 'QRS': 'Wide (>120ms)', 'P waves': 'Absent', 'T waves': 'Often inverted' },
     intervalsHead: 'Key features', ecgLabel: 'VTach',
-    tick: (gt) => tickVTach(gt),
+    tick: tickVTach,
     stats: () => ({ rate: rateBpm(ST.vtach.beats) || 180, beats: ST.vtach.beats.length, last: ST.vtach.beats.length ? Math.round(globalT - ST.vtach.beats[ST.vtach.beats.length-1]) + ' ms' : '—' }),
   },
 };
 
-// ============================================================
-// PANEL UPDATERS
-// ============================================================
 function updatePanelNSR(gt) {
   const t = gt % NSR_CYCLE;
   const phase = NSR_PHASES.find(p => t >= p.range[0] && t < p.range[1]) || NSR_PHASES[NSR_PHASES.length-1];
@@ -881,9 +1206,6 @@ function updateIntervalsPanel(rhythm) {
   $('intervalsHeading').textContent = rhythm.intervalsHead || 'Intervals (this cycle)';
 }
 
-// ============================================================
-// ECG SCROLLER
-// ============================================================
 const ECG_W = 1000, ECG_BASELINE = 140, ECG_SCALE = 70, ECG_PX_PER_MS = 0.35;
 const samples = [];
 const ecgTrace = $('ecg-trace'), ecgCursor = $('ecg-cursor'), banner = $('banner');
@@ -908,15 +1230,12 @@ function seedEcg() {
   }
 }
 
-// ============================================================
-// BANNER
-// ============================================================
 let lastBannerText = '';
-let lastBannerTime = 0;
 function showBanner(text, color) {
   if (lastBannerText === text) return;
-  lastBannerText = text; lastBannerTime = globalT;
+  lastBannerText = text;
   banner.textContent = text; banner.style.borderColor = color; banner.style.color = color;
+  banner.style.boxShadow = '0 0 24px ' + color + '33';
   banner.classList.add('show');
   clearTimeout(showBanner._t);
   showBanner._t = setTimeout(() => banner.classList.remove('show'), 900);
@@ -925,20 +1244,17 @@ function showBannerOnce(text, color) {
   if (lastBannerText === text) return;
   lastBannerText = text;
   banner.textContent = text; banner.style.borderColor = color; banner.style.color = color;
+  banner.style.boxShadow = '0 0 24px ' + color + '33';
   banner.classList.add('show');
   clearTimeout(showBanner._t);
-  showBanner._t = setTimeout(() => banner.classList.remove('show'), 1500);
+  showBanner._t = setTimeout(() => banner.classList.remove('show'), 1600);
 }
 
-// ============================================================
-// CONTROLS: speed, play/pause
-// ============================================================
 let playbackSpeed = 1.0, isPaused = false;
 const SPEED_MIN = 0.05, SPEED_MAX = 2.0;
 const LOG_MIN = Math.log(SPEED_MIN), LOG_MAX = Math.log(SPEED_MAX);
 const sliderToSpeed = v => Math.exp(LOG_MIN + (LOG_MAX - LOG_MIN) * (v / 1000));
 const speedToSlider = s => ((Math.log(s) - LOG_MIN) / (LOG_MAX - LOG_MIN)) * 1000;
-
 const speedSlider = $('speedSlider'), speedValue = $('speedValue');
 const playBtn = $('playPauseBtn'), playIcon = $('playIcon'), pauseIcon = $('pauseIcon');
 function formatSpeed(s) { return s < 0.1 ? s.toFixed(3).replace(/0+$/,'').replace(/\.$/,'') + '×' : s.toFixed(2) + '×'; }
@@ -965,11 +1281,7 @@ document.addEventListener('keydown', e => {
 });
 setSpeed(1.0);
 
-// ============================================================
-// PAGES (tab navigation) + RHYTHM SELECTION
-// ============================================================
 let currentRhythmKey = 'normal';
-let currentPage = 'normal';
 const rhythmSelector = $('rhythmSelector');
 const ecgLabel = $('ecg-label');
 
@@ -985,7 +1297,6 @@ function switchRhythm(key) {
   lastBannerText = '';
 }
 function switchPage(page) {
-  currentPage = page;
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.page === page));
   if (page === 'normal') { rhythmSelector.classList.remove('show'); switchRhythm('normal'); }
   else { rhythmSelector.classList.add('show'); switchRhythm(document.querySelector('#rhythmSelector button.active')?.dataset.rhythm || 'afib'); }
@@ -993,9 +1304,6 @@ function switchPage(page) {
 document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => switchPage(t.dataset.page)));
 document.querySelectorAll('#rhythmSelector button').forEach(b => b.addEventListener('click', () => switchRhythm(b.dataset.rhythm)));
 
-// ============================================================
-// MAIN LOOP
-// ============================================================
 let lastFrame = 0, globalT = 0;
 
 function loop(ts) {
