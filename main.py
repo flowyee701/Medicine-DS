@@ -12,11 +12,6 @@ app = FastAPI()
 def read_root():
     return 'Hello'
 
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
-
 @app.get("/heart/{heart_rate_min}_{heart_rate_max}")
 def filter_hr(heart_rate_min : int, heart_rate_max : int | None = None):
     res = data[data['heart_rate'].between(heart_rate_min, heart_rate_max)].to_json(force_ascii=False)
@@ -32,7 +27,7 @@ def qrs_to_axis():
         color='axis_deviation',
         category_orders={'axis_deviation' : ['normal', 'left_deviation', 'right_deviation']},
         color_discrete_map={
-            'normal':          '#2ca02c',
+            'normal':          "#279727",
             'left_deviation':  '#d62728',
             'right_deviation': '#1f77b4',
         },
@@ -58,4 +53,39 @@ def qrs_to_axis():
         legend_title_text='Axis deviation',
         width=800, height=700,
     )
+    return json.loads(fig.to_json())
+
+@app.get("/hypo3")
+def hypo3():
+    samp = data.sample(5000, random_state=42)
+
+    def qt_status(x):
+        b = x['qtc_bazett'] > 450
+        f = x['qtc_fridericia'] > 450
+        if b and f: return "Оба"
+        if b: return "Bazett"
+        if f: return "Fridericia"
+        return "Ни один"
+
+    samp['qt_status'] = samp.apply(qt_status, axis=1)
+
+    fig = px.scatter(
+        samp, x='qtc_fridericia', y='qtc_bazett',
+        color='heart_rate', color_continuous_scale='RdYlBu_r', opacity=0.7,
+        symbol="qt_status",
+        symbol_map={
+            "Оба" : "circle",
+            "Bazett" : "square",
+            "Fridericia" : "x",
+            "Ни один" : "diamond"
+        },
+        labels={"qtc_fridericia": "QTc Fridericia (мс)",
+                "qtc_bazett": "QTc Bazett (мс)", "heart_rate": "ЧСС"},
+        title=("Bazett против Fridericia: одна ЭКГ — разный QTc"),
+    )
+    fig.add_shape(type="line", x0=300, y0=300, x1=600, y1=600,
+                line=dict(dash="dash", color="black"))
+    fig.add_hline(y=450, line_dash="dot", line_color="grey")
+    fig.add_vline(x=450, line_dash="dot", line_color="grey")
+    fig.update_layout(width=800, height=750)
     return json.loads(fig.to_json())
