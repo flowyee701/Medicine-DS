@@ -89,3 +89,25 @@ def hypo3():
     fig.add_vline(x=450, line_dash="dot", line_color="grey")
     fig.update_layout(width=800, height=750)
     return json.loads(fig.to_json())
+
+
+@app.get("/ageheart/{item1}_{item2}_{item3}_{item4}")
+def age_heart_distr(item1 : int,item2 : int,item3 : int,item4 : int | None=None):
+    filtered_data = data[
+        (data["age"] >= item1) & (data["age"] <= item2) &
+        (data["heart_rate"] >= item3) & (data["heart_rate"] <= item4)
+    ]
+
+    fig = px.scatter(
+        filtered_data,
+        x="age",
+        y="heart_rate",
+        title="",
+        labels={
+            "age": "Age",
+            "heart_rate": "Heart rate"
+        },
+        hover_data=filtered_data.columns
+    )
+
+    return json.loads(fig.to_json())
