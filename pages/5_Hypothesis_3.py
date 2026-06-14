@@ -56,7 +56,7 @@ c1, c2, c3 = st.columns(3)
 c1.metric("Mean QTc, male", f"{male.mean():.1f} ms")
 c2.metric("Mean QTc, female", f"{female.mean():.1f} ms",
           f"+{female.mean() - male.mean():.1f} ms")
-c3.metric("Effect size (Cohen's d)", f"{d:.2f}", f"p = {p:.1e}")
+c3.metric("Effect size (Cohen's d)", f"{d:.2f}", f"p = {p:.1e}", delta_color="off")
 
 c4, c5 = st.columns(2)
 c4.metric("Flagged > 450 ms, male", f"{flag_male:.1f}%")
