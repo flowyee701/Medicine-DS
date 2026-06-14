@@ -64,9 +64,7 @@ worst = res.iloc[0]
 best = res.iloc[-1]
 c1, c2 = st.columns(2)
 c1.metric(f"Worst: {worst['diagnosis']}", f"{worst['agreement']*100:.0f}%")
-c1.caption(f"n = {worst['n']}")
 c2.metric(f"Best: {best['diagnosis']}", f"{best['agreement']*100:.0f}%")
-c2.caption(f"n = {best['n']}")
 
 st.success(
     "**Confirmed.** No diagnosis even reaches 65% agreement. The worst is "

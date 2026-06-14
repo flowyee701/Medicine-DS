@@ -56,9 +56,7 @@ st.plotly_chart(fig, use_container_width=True)
 
 c1, c2, c3 = st.columns(3)
 c1.metric("Slope (Normal)", f"{reg_n.slope:.4f}")
-c1.caption(f"r = {reg_n.rvalue:.3f}")
 c2.metric("Slope (Pathology)", f"{reg_p.slope:.4f}")
-c2.caption(f"r = {reg_p.rvalue:.3f}")
 c3.metric("Slope difference", f"{reg_p.slope - reg_n.slope:.4f}")
 
 st.success(
