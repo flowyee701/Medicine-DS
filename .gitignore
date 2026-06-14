@@ -1,3 +1,4 @@
 .venv
-.__pycache__
+__pycache__
 .vscode
+data/processed/user_submissions.csv

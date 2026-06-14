@@ -1,59 +1,76 @@
+import socket
+import threading
+
 import streamlit as st
 import pandas as pd
-import json
-import requests
-import plotly.io as pio
+import uvicorn
 
-data = pd.read_csv("data/processed/cleaned_ecg_dataset.csv")
-data['age'] = data['age'].astype(int)
-data['heart_rate'] = data['heart_rate'].astype(int)
+from main import app as api_app
 
-st.title("ECG")
-st.write("Data visualisation",data.head())
-st.info("Графики — в разделах слева: Polar и Hypo3")
+st.set_page_config(page_title="ECG Explorer", layout="wide")
 
-API = "http://127.0.0.1:8000"
 
-def show_chart(path, title):
-    st.title(title)
-    resp = requests.get(f"{API}{path}")
-    st.plotly_chart(pio.from_json(resp.text), use_container_width=True)
+class APIServer(uvicorn.Server):
+    def install_signal_handlers(self):
+        pass
 
-with st.form("my_form"):
-    st.write("Inside the form")
-    slider_age = st.slider("Age", min_value=1, max_value=115, value=[0, int(data['age'].median())])
-    slider_hr = st.slider("Heart Rate", min_value=30, max_value=150, value=[20,int(data['heart_rate'].median())])
 
-    # Every form must have a submit button.
-    submitted = st.form_submit_button("Submit")
-    if submitted:
-        # data[(data['age'].between(*slider_age)) & (data['heart_rate'] == slider_hr)]
-        st.spinner()
-        show_chart(f"/ageheart/{slider_age[0]}_{slider_age[1]}_{slider_hr[0]}_{slider_hr[1]}", " ")
-        st.balloons()
-        col1, col2 = st.columns(2)
-        slider_age_mean = int((slider_age[0] + slider_age[1]) / 2)
-        slider_hr_mean = int((slider_hr[0] + slider_hr[1]) / 2)
-        col2.metric("Age", f"{slider_age_mean} y.o", f"{round((slider_age_mean - int(data['age'].median())) / int(data['age'].median()), 2) * 100:.0f}%")
-        col1.metric("Heart rate", f"{slider_hr_mean} hpm", f"{round((slider_hr_mean-int(data['heart_rate'].median())) / int(data['heart_rate'].median()), 2) * 100:.0f}%")
-        
+def api_is_running():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        return sock.connect_ex(("127.0.0.1", 8000)) == 0
 
-options = st.multiselect(
-    "What are your favorite cat names?",
-    ["Jellybeans", "Fish Biscuit", "Madam President"],
-    max_selections=5,
-    accept_new_options=True,
+
+def start_api():
+    config = uvicorn.Config(api_app, host="127.0.0.1", port=8000, log_level="error")
+    APIServer(config=config).run()
+
+
+if not api_is_running():
+    threading.Thread(target=start_api, daemon=True).start()
+
+
+@st.cache_data
+def load_data():
+    return pd.read_csv("data/processed/cleaned_ecg_dataset.csv")
+
+
+df = load_data()
+
+st.title("ECG Arrhythmia Explorer")
+st.markdown(
+    "Analysis of ECG features based on the clinical **PTB-XL** database. "
+    "The menu on the left has the heart animation and three tested hypotheses."
 )
 
-st.write("You selected:", options)
+st.divider()
 
+col1, col2, col3 = st.columns(3)
+col1.metric("ECG records", f"{len(df):,}")
+col2.metric("Features", df.shape[1])
+abnormal_share = df["abnormal_flag"].mean() * 100
+col3.metric("Abnormal share", f"{abnormal_share:.1f}%")
 
-popover = st.popover("Filter items")
-red = popover.checkbox("Show red items.", True)
-blue = popover.checkbox("Show blue items.", True)
+st.subheader("About the data")
+st.markdown(
+    """
+- **PTB-XL** - 21,837 12-lead ECG records from ~19k patients (PhysioNet).
+- Every record comes with SCP-ECG diagnoses and measured parameters
+  (heart rate, PR / QRS / QT intervals, axes, etc.).
+- We computed several derived columns: `abnormal_flag` (pathology present or not),
+  number of diagnoses, age and heart rate groups.
+"""
+)
 
-if red:
-    st.write(":red[This is a red item.]")
-if blue:
-    st.write(":blue[This is a blue item.]")
-        
+st.subheader("Hypotheses")
+st.markdown(
+    """
+1. **QT–RR slope** differs between healthy and pathological patients.
+2. **Bazett vs Framingham** - the formulas disagree, and it depends on the diagnosis.
+3. **The 450 ms QTc threshold** is biased by sex and over-flags women.
+"""
+)
+
+with st.expander("Show the first rows of the data"):
+    st.dataframe(df.head(20))
+
+st.info("Pick a page in the menu on the left to view the animation or the hypotheses.")
